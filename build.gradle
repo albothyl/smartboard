@@ -16,6 +16,11 @@ ext {
     servletVersion = '4.0.0'
     handelbarViewResolverVersion = '4.0.6'
 
+    springDataJpaVersion = '2.0.3.RELEASE'
+    hibernateVersion = '5.2.12.Final'
+    hibernateJpaVersion = '1.0.2.Final'
+    mysqlConnectorVersion = '6.0.6'
+
 //  Util ==================================
     lombokVersion = '1.16.10'
     guavaVersion = '19.0'
@@ -32,6 +37,15 @@ dependencies {
     compile("org.springframework:spring-webmvc:${springVersion}")
     compile("javax.servlet:javax.servlet-api:${servletVersion}")
     compile("com.github.jknack:handlebars-springmvc:${handelbarViewResolverVersion}")
+
+    compile "org.springframework:spring-orm:${springVersion}"
+    compile "org.springframework:spring-tx:${springVersion}"
+    compile "org.springframework.data:spring-data-jpa:${springDataJpaVersion}"
+
+    compile "org.hibernate:hibernate-core:${hibernateVersion}"
+    compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
+
+    compile "mysql:mysql-connector-java:${mysqlConnectorVersion}"
 
     compile("org.projectlombok:lombok:${lombokVersion}")
     compile("com.google.guava:guava:${guavaVersion}")
