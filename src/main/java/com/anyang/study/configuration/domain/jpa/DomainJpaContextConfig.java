@@ -1,4 +1,4 @@
-package com.anyang.study.configuration;
+package com.anyang.study.configuration.domain.jpa;
 
 import com.anyang.study.Base;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +22,9 @@ import static org.springframework.orm.jpa.vendor.Database.MYSQL;
 @EnableJpaAuditing
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackageClasses = { Base.class })
-public class DomainContextConfig {
+public class DomainJpaContextConfig {
 
-	private static final String DB_HOST = "jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF8";
+	private static final String DB_HOST = "jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false&useUnicode=true&characterEncoding=UTF8";
 	private static final String DB_ID = "db_id";
 	private static final String DB_PW = "db_pw";
 

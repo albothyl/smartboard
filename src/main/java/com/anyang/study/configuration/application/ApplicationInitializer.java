@@ -1,4 +1,4 @@
-package com.anyang.study.configuration;
+package com.anyang.study.configuration.application;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
