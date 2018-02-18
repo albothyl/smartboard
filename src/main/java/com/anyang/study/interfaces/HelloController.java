@@ -1,4 +1,4 @@
-package com.anyang.study.hello;
+package com.anyang.study.interfaces;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

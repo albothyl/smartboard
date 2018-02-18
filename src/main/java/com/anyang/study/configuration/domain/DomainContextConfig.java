@@ -1,11 +1,13 @@
 package com.anyang.study.configuration.domain;
 
 import com.anyang.study.Base;
+import com.anyang.study.domain.Domain;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -26,6 +28,7 @@ import static org.springframework.orm.jpa.vendor.Database.MYSQL;
 @Configuration
 @EnableJpaAuditing
 @EnableTransactionManagement
+@ComponentScan(basePackageClasses = { Domain.class })
 @EnableJpaRepositories(basePackageClasses = { Base.class })
 public class DomainContextConfig {
 
@@ -63,8 +66,7 @@ public class DomainContextConfig {
 
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
-		factoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis/config/mybatis-config.xml"));
-//		factoryBean.setMapperLocations(applicationContext.getResources("classpath:repository/mybatis/mapper/*.xml"));
+		factoryBean.setConfigLocation(applicationContext.getResource("classpath:mybatis/config/mybatisConfig.xml"));
 
 		return factoryBean;
 	}

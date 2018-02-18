@@ -1,4 +1,4 @@
-package com.anyang.study.domain.mapping;
+package com.anyang.study.domain.dao;
 
 import com.anyang.study.domain.repository.Board;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -11,11 +11,11 @@ public class BoardDaoImpl {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-	public void write(Board board) {
-		sqlSessionTemplate.insert("Board.write", board);
+	public int write(Board board) {
+		return sqlSessionTemplate.insert("Board.write", board);
 	}
 
-	public Board read(Long id) {
+	public Board read(int id) {
 		return sqlSessionTemplate.selectOne("Board.read", id);
 	}
 }
