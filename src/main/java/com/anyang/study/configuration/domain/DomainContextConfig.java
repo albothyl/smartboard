@@ -1,6 +1,10 @@
 package com.anyang.study.configuration.domain;
 
 import com.anyang.study.Base;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -13,6 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -28,17 +33,7 @@ public class DomainContextConfig {
 	private static final String DB_ID = "db_id";
 	private static final String DB_PW = "db_pw";
 
-	@Bean
-	public DataSource dataSource() throws SQLException {
-		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-		dataSource.setDriver(new com.mysql.jdbc.Driver());
-		dataSource.setUrl(DB_HOST);
-		dataSource.setUsername(DB_ID);
-		dataSource.setPassword(DB_PW);
-
-		return dataSource;
-	}
-
+	//JPA
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -60,6 +55,34 @@ public class DomainContextConfig {
 		jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.DefaultNamingStrategy");
 
 		return jpaProperties;
+	}
+
+	//MyBatis
+	@Bean
+	public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource, ApplicationContext applicationContext) throws IOException {
+
+		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+		factoryBean.setDataSource(dataSource);
+		factoryBean.setMapperLocations(applicationContext.getResources("classpath:repository/mybatis/mapper/*.xml"));
+
+		return factoryBean;
+	}
+
+	@Bean
+	public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+		return new SqlSessionTemplate(sqlSessionFactory);
+	}
+
+	//Common
+	@Bean
+	public DataSource dataSource() throws SQLException {
+		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		dataSource.setDriver(new com.mysql.jdbc.Driver());
+		dataSource.setUrl(DB_HOST);
+		dataSource.setUsername(DB_ID);
+		dataSource.setPassword(DB_PW);
+
+		return dataSource;
 	}
 
 	@Bean
