@@ -1,7 +1,7 @@
 package com.anyang.study.domain.repository;
 
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
-import com.anyang.study.configuration.domain.jpa.DomainJpaContextConfig;
+import com.anyang.study.configuration.domain.DomainContextConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = { DomainJpaContextConfig.class })
+@ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = { DomainContextConfig.class })
 @Transactional
 public class BoardRepositoryTest {
 

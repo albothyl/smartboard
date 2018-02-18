@@ -1,7 +1,7 @@
 package com.anyang.study.configuration.application;
 
 import com.anyang.study.Base;
-import com.anyang.study.configuration.domain.jpa.DomainJpaContextConfig;
+import com.anyang.study.configuration.domain.DomainContextConfig;
 import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 @EnableWebMvc
-@Import({ DomainJpaContextConfig.class })
+@Import({ DomainContextConfig.class })
 @ComponentScan(basePackageClasses = { Base.class })
 public class ApplicationContextConfig extends WebMvcConfigurationSupport {
 
