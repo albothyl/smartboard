@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Board">
+  <insert id="write" parameterType="board">
+    INSERT INTO
+    BOARD(
+    title
+    , content
+    , writer)
+    VALUES(
+      #{title}
+    , #{content}
+    , #{writer})
+  </insert>
+
+  <select id="read" parameterType="Long" resultType="board">
+    SELECT
+    , id
+    , title
+    , content
+    , writer
+    , modifiedAt
+    , createdAt
+    FROM board
+    WHERE id = #{value}
+  </select>
+</mapper>
