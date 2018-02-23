@@ -26,15 +26,24 @@ ext {
 
 //  Test ==================================
     junitVerison = '4.12'
+
+//  DB ====================================
+    mySQLConnectorVersion = '6.0.6'
+    jpaVersion = "1.5.10.RELEASE"
 }
 
 dependencies {
     compile("org.springframework:spring-webmvc:${springVersion}")
     compile("javax.servlet:javax.servlet-api:${servletVersion}")
     compile("com.github.jknack:handlebars-springmvc:${handelbarViewResolverVersion}")
+    compile("org.springframework:spring-test:${springVersion}")
 
     compile("org.projectlombok:lombok:${lombokVersion}")
     compile("com.google.guava:guava:${guavaVersion}")
+
+    compile("mysql:mysql-connector-java:${mySQLConnectorVersion}")
+    compile("org.springframework:spring-jdbc:${springVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${jpaVersion}")
 
     runtime("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
     runtime("ch.qos.logback:logback-classic:${logbackVersion}")
