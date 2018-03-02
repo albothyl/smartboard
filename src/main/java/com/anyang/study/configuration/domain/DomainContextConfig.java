@@ -1,6 +1,7 @@
 package com.anyang.study.configuration.domain;
 
 import com.anyang.study.Base;
+import com.anyang.study.repository.Repository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +12,8 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = {Base.class})
-@ComponentScan(basePackageClasses = {Base.class})
+@ComponentScan(basePackageClasses = { Repository.class })
+@EnableJpaRepositories(basePackageClasses = { Base.class})
 public class DomainContextConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
