@@ -11,7 +11,6 @@ public class HelloController {
 
 	@RequestMapping("/")
 	public ModelAndView hello() {
-		log.info("come in initial controller");
 
 		ModelAndView mav = new ModelAndView("index");
 		mav.addObject("Title", "Hello");

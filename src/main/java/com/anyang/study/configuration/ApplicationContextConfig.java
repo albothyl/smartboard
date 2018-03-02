@@ -10,18 +10,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { Base.class })
+@ComponentScan(basePackageClasses = {Base.class})
 public class ApplicationContextConfig extends WebMvcConfigurationSupport {
 
-	@Bean
-	public HandlebarsViewResolver handlebarsViewResolver() {
-		HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
-		viewResolver.setFailOnMissingFile(false);
-		viewResolver.setCache(true);
+    @Bean
+    public HandlebarsViewResolver handlebarsViewResolver() {
+        HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
+        viewResolver.setFailOnMissingFile(false);
+        viewResolver.setCache(true);
 
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".hbs");
+        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setSuffix(".hbs");
 
-		return viewResolver;
-	}
+        return viewResolver;
+    }
+
 }
