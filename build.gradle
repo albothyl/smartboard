@@ -3,11 +3,29 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'org.flywaydb.flyway'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:5.0.7"
+    }
+}
+
+flyway {
+    url = 'jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false'
+    user = 'smartuser'
+    password = 'smartuser'
 }
 
 ext {
