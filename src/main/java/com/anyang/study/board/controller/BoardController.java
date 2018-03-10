@@ -19,4 +19,14 @@ public class BoardController {
 
         return mav;
     }
+
+    public ModelAndView hello1() {
+        log.info("come in initial controller");
+
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("Title", "Hello111");
+        mav.addObject("Content", "Hello every one222");
+
+        return mav;
+    }
 }
