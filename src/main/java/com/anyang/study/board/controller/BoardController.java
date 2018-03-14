@@ -42,13 +42,16 @@ public class BoardController {
             @RequestParam("title") String title,
             @RequestParam("writer") String writer,
             @RequestParam("content") String content){
-        log.info("board create");
+
         Board board = new Board();
         board.setTitle(title);
         board.setWriter(writer);
         board.setContent(content);
 
         Board createdBoard = boardService.insertBoard(board);
+        log.info("board created");
+        log.info(title);
+
         ModelAndView mav = new ModelAndView("createcomplete");
 
         return mav;

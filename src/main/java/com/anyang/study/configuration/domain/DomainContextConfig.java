@@ -25,8 +25,8 @@ import static org.springframework.orm.jpa.vendor.Database.MYSQL;
 public class DomainContextConfig {
 
 	private static final String DB_HOST = "jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false&useUnicode=true&characterEncoding=UTF8";
-	private static final String DB_ID = "db_id";
-	private static final String DB_PW = "db_pw";
+	private static final String DB_ID = "smartuser";
+	private static final String DB_PW = "smartuser";
 
 	@Bean
 	public DataSource dataSource() throws SQLException {
