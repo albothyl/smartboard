@@ -31,17 +31,18 @@ public class BoardController {
     }
 
     @RequestMapping(value = "/board/create", method = GET)
-    public ModelAndView createForm(){
+    public ModelAndView createForm() {
         log.info("board create");
         ModelAndView mav = new ModelAndView("createform");
 
         return mav;
     }
+
     @RequestMapping(value = "/board/create", method = POST)
     public ModelAndView create(
             @RequestParam("title") String title,
             @RequestParam("writer") String writer,
-            @RequestParam("content") String content){
+            @RequestParam("content") String content) {
 
         Board board = new Board();
         board.setTitle(title);

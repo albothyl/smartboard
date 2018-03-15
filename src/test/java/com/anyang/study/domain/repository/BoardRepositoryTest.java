@@ -13,24 +13,24 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = { DomainContextConfig.class })
+@ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
 @Transactional
 public class BoardRepositoryTest {
 
-	@Autowired
-	private BoardRepository boardRepository;
+    @Autowired
+    private BoardRepository boardRepository;
 
-	@Test
-	public void CRUD_Test() {
-		Board board = new Board();
-		board.setTitle("title");
-		board.setContent("content");
-		board.setWriter("writer");
+    @Test
+    public void CRUD_Test() {
+        Board board = new Board();
+        board.setTitle("title");
+        board.setContent("content");
+        board.setWriter("writer");
 
-		final Board savedBoard = boardRepository.save(board);
+        final Board savedBoard = boardRepository.save(board);
 
-		assertThat(savedBoard.getTitle(), is(board.getTitle()));
-		assertThat(savedBoard.getContent(), is(board.getContent()));
-		assertThat(savedBoard.getWriter(), is(board.getWriter()));
-	}
+        assertThat(savedBoard.getTitle(), is(board.getTitle()));
+        assertThat(savedBoard.getContent(), is(board.getContent()));
+        assertThat(savedBoard.getWriter(), is(board.getWriter()));
+    }
 }

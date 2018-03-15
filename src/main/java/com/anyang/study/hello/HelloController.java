@@ -9,14 +9,14 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloController {
 
-	@RequestMapping("/")
-	public ModelAndView hello() {
-		log.info("come in initial controller");
+    @RequestMapping("/")
+    public ModelAndView hello() {
+        log.info("come in initial controller");
 
-		ModelAndView mav = new ModelAndView("index");
-		mav.addObject("Title", "Hello");
-		mav.addObject("Content", "Hello every one");
+        ModelAndView mav = new ModelAndView("index");
+        mav.addObject("Title", "Hello");
+        mav.addObject("Content", "Hello every one");
 
-		return mav;
-	}
+        return mav;
+    }
 }

@@ -13,24 +13,24 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 @EnableWebMvc
-@Import({ DomainContextConfig.class })
-@ComponentScan(basePackageClasses = { Base.class })
+@Import({DomainContextConfig.class})
+@ComponentScan(basePackageClasses = {Base.class})
 public class ApplicationContextConfig extends WebMvcConfigurationSupport {
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
-	@Bean
-	public HandlebarsViewResolver handlebarsViewResolver() {
-		HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
-		viewResolver.setFailOnMissingFile(false);
-		viewResolver.setCache(false);
+    @Bean
+    public HandlebarsViewResolver handlebarsViewResolver() {
+        HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
+        viewResolver.setFailOnMissingFile(false);
+        viewResolver.setCache(false);
 
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".hbs");
+        viewResolver.setPrefix("/WEB-INF/views/");
+        viewResolver.setSuffix(".hbs");
 
-		return viewResolver;
-	}
+        return viewResolver;
+    }
 }

@@ -13,13 +13,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = { DomainContextConfig.class })
+@ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
 public class BoardServiceTest {
     @Autowired
     private BoardService boardService;
 
     @Test
-    public void insert(){
+    public void insert() {
         Board board = new Board();
         board.setTitle("제목");
         board.setWriter("작성자");

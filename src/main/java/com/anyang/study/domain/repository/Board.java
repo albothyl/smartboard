@@ -19,14 +19,14 @@ import java.time.LocalDateTime;
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String title;
-	private String content;
-	private String writer;
-	@LastModifiedDate
-	private LocalDateTime modifiedAt;
-	@CreatedDate
-	private LocalDateTime createdAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String content;
+    private String writer;
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 }

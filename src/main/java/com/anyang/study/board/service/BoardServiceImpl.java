@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("BoardService")
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
     @Autowired
     BoardRepository boardRepository;
+
     @Override
     public Board getBoard(Board board) {
         return null;
