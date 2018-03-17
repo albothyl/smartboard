@@ -11,7 +11,7 @@ public class BoardServiceImpl implements BoardService {
     BoardRepository boardRepository;
 
     @Override
-    public Board getBoard(Board board) {
+    public Board getBoard(long id) {
         return null;
     }
 

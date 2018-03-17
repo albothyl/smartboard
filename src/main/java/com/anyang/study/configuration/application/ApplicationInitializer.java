@@ -1,11 +1,11 @@
 package com.anyang.study.configuration.application;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
@@ -20,7 +20,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         webServlet.addMapping("/");
 
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setEncoding(CharEncoding.UTF_8);
         javax.servlet.FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encodingFilter", characterEncodingFilter);
         encodingFilter.addMappingForUrlPatterns(null, true, "/*");
     }

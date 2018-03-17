@@ -4,7 +4,7 @@ import com.anyang.study.board.domain.Board;
 
 public interface BoardService {
     //게시판 정보를 데이터베이스에서 읽어와 화면에 출력한다.
-    Board getBoard(Board board);
+    Board getBoard(long id);
 
     //게시판 정보를 화면에서 입력하여 항목의 정합성을 체크하고 데이터베이스에 저장한다.
     Board insertBoard(Board board);

@@ -1,7 +1,8 @@
 package com.anyang.study.board.interfaces.controller;
 
+import com.anyang.study.board.application.BoardService;
 import com.anyang.study.board.domain.Board;
-import com.anyang.study.board.application.BoardServiceImpl;
+import com.anyang.study.board.interfaces.dto.BoardDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
@@ -19,7 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class BoardController {
 
     @Autowired
-    private BoardServiceImpl boardService;
+    private BoardService boardService;
 
     @RequestMapping("/board")
     public ModelAndView hello() {
@@ -32,34 +30,54 @@ public class BoardController {
         return mav;
     }
 
-    @RequestMapping(value = "/board/create", method = GET)
-    public ModelAndView createForm() {
-        LocalDateTime now = LocalDateTime.now();
-        log.info("board create");
-        ModelAndView mav = new ModelAndView("createform");
+    //새글 등록
+    @RequestMapping(value = "/board/boardUpdateForm")
+    public ModelAndView updateForm() {
+        ModelAndView mav = new ModelAndView("boardUpdate");
 
         return mav;
     }
 
+    //기존글 수정
+    @RequestMapping(value = "/board/boardUpdateForm", method = POST)
+    public ModelAndView updateForm(@RequestParam("bid") long bid) {
+        Board gotBoard = boardService.getBoard(bid);
 
-    @RequestMapping(value = "/board/create", method = POST)
-    public ModelAndView create(
-            @RequestParam("title") String title,
-            @RequestParam("writer") String writer,
-            @RequestParam("content") String content) { //다른 파라미터로 받지말고 Board로 받자
+        BoardDto gotBoardDto = new BoardDto();
+        gotBoardDto.setId(gotBoard.getId());
+        gotBoardDto.setTitle(gotBoard.getTitle());
+        gotBoardDto.setContent(gotBoard.getContent());
+        gotBoardDto.setWriter(gotBoard.getWriter());
+        gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
+        gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
 
-        Board board = new Board();
-        board.setTitle(title);
-        board.setWriter(writer);
-        board.setContent(content);
 
-        Board createdBoard = boardService.insertBoard(board);
-
-        createdBoard.getId();
-
-        ModelAndView mav = new ModelAndView("createcomplete");
+        ModelAndView mav = new ModelAndView("boardUpdate");
+        mav.addObject("Board", gotBoardDto);
 
         return mav;
+    }
+
+    //게시글등록 후 상세페이지로
+    @RequestMapping(value = "/board/boardUpdate", method = POST)
+    public String create(@RequestParam("title") String title,
+                         @RequestParam("writer") String writer,
+                         @RequestParam("content") String content) {
+
+        BoardDto requestedBoardDto = new BoardDto();
+        requestedBoardDto.setTitle(title);
+        requestedBoardDto.setWriter(writer);
+        requestedBoardDto.setContent(content);
+
+        Board requestedBoard = new Board();
+        requestedBoard.setTitle(requestedBoardDto.getTitle());
+        requestedBoard.setWriter(requestedBoardDto.getWriter());
+        requestedBoard.setContent(requestedBoardDto.getContent());
+
+        Board createdBoard = boardService.insertBoard(requestedBoard);
+        long createdId = createdBoard.getId();
+        return "redirect:/board/boardDetail/" + createdId;
+
     }
 
     @RequestMapping("/board/delete")
