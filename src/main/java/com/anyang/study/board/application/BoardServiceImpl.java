@@ -1,7 +1,7 @@
-package com.anyang.study.board.service;
+package com.anyang.study.board.application;
 
 import com.anyang.study.board.domain.Board;
-import com.anyang.study.board.domain.repository.BoardRepository;
+import com.anyang.study.board.domain.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

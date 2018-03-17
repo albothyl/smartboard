@@ -1,13 +1,15 @@
-package com.anyang.study.board.controller;
+package com.anyang.study.board.interfaces.controller;
 
 import com.anyang.study.board.domain.Board;
-import com.anyang.study.board.service.BoardServiceImpl;
+import com.anyang.study.board.application.BoardServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDateTime;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -32,17 +34,19 @@ public class BoardController {
 
     @RequestMapping(value = "/board/create", method = GET)
     public ModelAndView createForm() {
+        LocalDateTime now = LocalDateTime.now();
         log.info("board create");
         ModelAndView mav = new ModelAndView("createform");
 
         return mav;
     }
 
+
     @RequestMapping(value = "/board/create", method = POST)
     public ModelAndView create(
             @RequestParam("title") String title,
             @RequestParam("writer") String writer,
-            @RequestParam("content") String content) {
+            @RequestParam("content") String content) { //다른 파라미터로 받지말고 Board로 받자
 
         Board board = new Board();
         board.setTitle(title);
@@ -50,8 +54,8 @@ public class BoardController {
         board.setContent(content);
 
         Board createdBoard = boardService.insertBoard(board);
-        log.info("board created");
-        log.info(title);
+
+        createdBoard.getId();
 
         ModelAndView mav = new ModelAndView("createcomplete");
 
@@ -73,5 +77,4 @@ public class BoardController {
 
         return mav;
     }
-
 }

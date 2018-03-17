@@ -1,4 +1,4 @@
-package com.anyang.study.board.service;
+package com.anyang.study.board.application;
 
 import com.anyang.study.board.domain.Board;
 

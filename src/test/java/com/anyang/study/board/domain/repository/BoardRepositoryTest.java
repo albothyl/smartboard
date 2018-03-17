@@ -1,6 +1,7 @@
 package com.anyang.study.board.domain.repository;
 
 import com.anyang.study.board.domain.Board;
+import com.anyang.study.board.domain.BoardRepository;
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
 import com.anyang.study.configuration.domain.DomainContextConfig;
 import org.junit.Test;
