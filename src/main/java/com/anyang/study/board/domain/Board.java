@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "create")
-@Builder
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {

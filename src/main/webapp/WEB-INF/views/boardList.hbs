@@ -1,0 +1,45 @@
+<html>
+<head>
+    <title>게시판 목록화면</title>
+</head>
+
+<script>
+        function onWrite() {
+            //self.locaion ="/board/boardUpdate";
+            self.location.replace('/board/boardUpdate');
+        }
+
+</script>
+
+<body>
+<h1>게시판 목록화면</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each list}}
+        <tr>
+            <td>{{id}}</td>
+            <td><a href="/board/boardDetail/{{id}}">{{title}}</a></td>
+            <td>{{writer}}</td>
+            <td>{{createdAt2}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <label><input type="button" name="create" value="글쓰기" onclick=javascript:onWrite(); /></label>
+</div>
+
+
+</body>
+</html>
