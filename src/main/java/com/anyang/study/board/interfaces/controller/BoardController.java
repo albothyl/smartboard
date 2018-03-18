@@ -6,8 +6,8 @@ import com.anyang.study.board.interfaces.dto.BoardDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.format.DateTimeFormatter;
@@ -64,17 +64,19 @@ public class BoardController {
         return mav;
     }
 
-    //새글 등록
-    @RequestMapping(value = "/board/boardUpdateForm")
-    public ModelAndView updateForm() {
+    //새글작성
+    @RequestMapping(value = "/board/boardUpdate")
+    public ModelAndView create() {
         ModelAndView mav = new ModelAndView("boardUpdate");
 
         return mav;
     }
 
-    //기존글 수정
-    @RequestMapping(value = "/board/boardUpdateForm", method = POST)
-    public ModelAndView updateForm(@RequestParam("bid") long bid) {
+    //이전글 수정
+    @RequestMapping(value = "/board/boardUpdate/{id}")
+    public ModelAndView modify(@PathVariable(value = "id") long bid) {
+        ModelAndView mav = new ModelAndView("boardUpdate");
+
         Board gotBoard = boardService.getBoard(bid);
 
         BoardDto gotBoardDto = new BoardDto();
@@ -85,28 +87,20 @@ public class BoardController {
         gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
         gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
 
-
-        ModelAndView mav = new ModelAndView("boardUpdate");
-        mav.addObject("Board", gotBoardDto);
+        mav.addObject("board", gotBoardDto);
 
         return mav;
     }
 
     //게시글등록 후 상세페이지로
     @RequestMapping(value = "/board/boardUpdate", method = POST)
-    public String create(@RequestParam("title") String title,
-                         @RequestParam("writer") String writer,
-                         @RequestParam("content") String content) {
-
-        BoardDto requestedBoardDto = new BoardDto();
-        requestedBoardDto.setTitle(title);
-        requestedBoardDto.setWriter(writer);
-        requestedBoardDto.setContent(content);
+    public String update(BoardDto board) {
 
         Board requestedBoard = new Board();
-        requestedBoard.setTitle(requestedBoardDto.getTitle());
-        requestedBoard.setWriter(requestedBoardDto.getWriter());
-        requestedBoard.setContent(requestedBoardDto.getContent());
+        requestedBoard.setId(board.getId());
+        requestedBoard.setTitle(board.getTitle());
+        requestedBoard.setWriter(board.getWriter());
+        requestedBoard.setContent(board.getContent());
 
         Board createdBoard = boardService.insertBoard(requestedBoard);
         long createdId = createdBoard.getId();
