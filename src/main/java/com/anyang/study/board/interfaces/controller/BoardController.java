@@ -39,12 +39,11 @@ public class BoardController {
     @RequestMapping(value = "/board/boardList")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board>  gotBoardList = boardService.getBoardAll();
+        List<Board> gotBoardList = boardService.getBoardAll();
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
 
-        for(int i=0; i<gotBoardList.size();i++)
-        {
+        for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
             BoardDto dto = new BoardDto();
             dto.setId(board.getId());

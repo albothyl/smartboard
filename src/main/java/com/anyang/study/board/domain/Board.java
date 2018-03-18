@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "create")
 @Table(schema = "smartboard", name = "board")

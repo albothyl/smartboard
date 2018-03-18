@@ -18,16 +18,17 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> getBoardAll() {
         List<Board> arrayList = new ArrayList<>();
-        arrayList =  boardRepository.findAll();
+        arrayList = boardRepository.findAll();
         return arrayList;
     }
 
     @Override
     public Board getBoard(long id) {
-        Optional<Board> gotBoard=  boardRepository.findById(id);
+        Optional<Board> gotBoard = boardRepository.findById(id);
         Board foundBoard = gotBoard.get();
         return foundBoard;
     }
+
     @Override
     public Board insertBoard(Board board) {
         return boardRepository.save(board);
