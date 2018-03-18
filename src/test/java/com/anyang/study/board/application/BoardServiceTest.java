@@ -32,8 +32,4 @@ public class BoardServiceTest {
 
         assertThat(insertedBoard.getId(), is(board.getId()));
     }
-
-
-
-
 }

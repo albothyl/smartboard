@@ -43,5 +43,4 @@ public class BoardRepositoryTest {
         boardRepository.delete(board);
         assertEquals(0, boardRepository.count());
     }
-
 }
