@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
@@ -26,6 +30,34 @@ public class BoardController {
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("Title", "Hello111");
         mav.addObject("Content", "Hello every one222");
+
+        return mav;
+    }
+
+    //목록 가져오기
+    @RequestMapping(value = "/board/boardList")
+    public ModelAndView boardList() {
+        ModelAndView mav = new ModelAndView("boardList");
+        List<Board> gotBoardList = boardService.getBoardAll();
+
+        ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
+
+        for (int i = 0; i < gotBoardList.size(); i++) {
+            Board board = gotBoardList.get(i);
+            BoardDto dto = new BoardDto();
+            dto.setId(board.getId());
+            dto.setTitle(board.getTitle());
+            dto.setContent(board.getContent());
+            dto.setWriter(board.getWriter());
+            //  등록날짜 형식 변환
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");
+            String nowDate = board.getCreatedAt().format(dateTimeFormatter);
+            dto.setCreatedAt2(nowDate);
+
+            dto.setModifiedAt(board.getModifiedAt());
+            gotBoardDtoList.add(dto);
+        }
+        mav.addObject("list", gotBoardDtoList);
 
         return mav;
     }
