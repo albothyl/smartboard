@@ -4,9 +4,16 @@
 </head>
 <body>
 <form method="post" action="/board/boardUpdate">
-    <div><input type="text" name="title" placeholder="제목을 입력하세요. {{Board.title}}"></div>
-    <div><input type="text" name="writer" placeholder="작성자를 입력하세요. {{Board.writer}}"></div>
-    <div><textarea name="content" placeholder="내용을 입력하세요. {{Board.content}}"></textarea></div>
+    {{#if board}}
+    <div><input type="text" name="title" value="{{board.title}}"></div>
+    <div><input type="text" name="writer" value="{{board.writer}}"></div>
+    <div><textarea name="content" value="{{board.content}}"></textarea></div>
+    <input type="hidden" name="id" value="{{board.id}}">
+    {{else}}
+    <div><input type="text" name="title" placeholder="제목을 입력하세요." value="{{board.title}}"></div>
+    <div><input type="text" name="writer" placeholder="작성자를 입력하세요." value="{{board.writer}}"></div>
+    <div><textarea name="content" placeholder="내용을 입력하세요." value="{{board.content}}">{{board.content}}</textarea></div>
+    {{/if}}
     <div><input type="submit" value="작성"></div>
 </form>
 </body>

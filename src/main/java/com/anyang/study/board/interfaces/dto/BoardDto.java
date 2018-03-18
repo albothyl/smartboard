@@ -1,9 +1,6 @@
 package com.anyang.study.board.interfaces.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "create")
+@Builder
 public class BoardDto {
     private Long id;
     private String title;

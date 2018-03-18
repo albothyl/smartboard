@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "create")
+@Builder
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
