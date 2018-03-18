@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service("BoardService")
@@ -23,7 +24,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board getBoard(long id) {
-        return null;
+        Optional<Board> gotBoard=  boardRepository.findById(id);
+        Board foundBoard = gotBoard.get();
+        return foundBoard;
     }
     @Override
     public Board insertBoard(Board board) {
