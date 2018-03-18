@@ -3,6 +3,7 @@ package com.anyang.study.board.application;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
 import com.anyang.study.configuration.domain.DomainContextConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class BoardServiceTest {
     private BoardService boardService;
 
     @Test
+    @Ignore
     public void insert() {
         Board board = new Board();
         board.setTitle("제목");
@@ -30,4 +32,8 @@ public class BoardServiceTest {
 
         assertThat(insertedBoard.getId(), is(board.getId()));
     }
+
+
+
+
 }
