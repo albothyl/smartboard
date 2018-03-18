@@ -6,13 +6,9 @@ import com.anyang.study.board.interfaces.dto.BoardDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -34,47 +30,19 @@ public class BoardController {
         return mav;
     }
 
-
-    //목록 가져오기
-    @RequestMapping(value = "/board/boardList")
-    public ModelAndView boardList() {
-        ModelAndView mav = new ModelAndView("boardList");
-        List<Board>  gotBoardList = boardService.getBoardAll();
-
-        ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
-
-        for(int i=0; i<gotBoardList.size();i++)
-        {
-            Board board = gotBoardList.get(i);
-            BoardDto dto = new BoardDto();
-            dto.setId(board.getId());
-            dto.setTitle(board.getTitle());
-            dto.setContent(board.getContent());
-            dto.setWriter(board.getWriter());
-            //  등록날짜 형식 변환
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");
-            String nowDate = board.getCreatedAt().format(dateTimeFormatter);
-            dto.setCreatedAt2(nowDate);
-
-            dto.setModifiedAt(board.getModifiedAt());
-            gotBoardDtoList.add(dto);
-        }
-        mav.addObject("list", gotBoardDtoList);
-
-        return mav;
-    }
-
-    //새글 등록
-    @RequestMapping(value = "/board/boardUpdateForm")
-    public ModelAndView updateForm() {
+    //새글작성
+    @RequestMapping(value = "/board/boardUpdate")
+    public ModelAndView create() {
         ModelAndView mav = new ModelAndView("boardUpdate");
 
         return mav;
     }
 
-    //기존글 수정
-    @RequestMapping(value = "/board/boardUpdateForm", method = POST)
-    public ModelAndView updateForm(@RequestParam("bid") long bid) {
+    //이전글 수정
+    @RequestMapping(value = "/board/boardUpdate/{id}")
+    public ModelAndView modify(@PathVariable(value = "id") long bid) {
+        ModelAndView mav = new ModelAndView("boardUpdate");
+
         Board gotBoard = boardService.getBoard(bid);
 
         BoardDto gotBoardDto = new BoardDto();
@@ -85,28 +53,20 @@ public class BoardController {
         gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
         gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
 
-
-        ModelAndView mav = new ModelAndView("boardUpdate");
-        mav.addObject("Board", gotBoardDto);
+        mav.addObject("board", gotBoardDto);
 
         return mav;
     }
 
     //게시글등록 후 상세페이지로
     @RequestMapping(value = "/board/boardUpdate", method = POST)
-    public String create(@RequestParam("title") String title,
-                         @RequestParam("writer") String writer,
-                         @RequestParam("content") String content) {
-
-        BoardDto requestedBoardDto = new BoardDto();
-        requestedBoardDto.setTitle(title);
-        requestedBoardDto.setWriter(writer);
-        requestedBoardDto.setContent(content);
+    public String update(BoardDto board) {
 
         Board requestedBoard = new Board();
-        requestedBoard.setTitle(requestedBoardDto.getTitle());
-        requestedBoard.setWriter(requestedBoardDto.getWriter());
-        requestedBoard.setContent(requestedBoardDto.getContent());
+        requestedBoard.setId(board.getId());
+        requestedBoard.setTitle(board.getTitle());
+        requestedBoard.setWriter(board.getWriter());
+        requestedBoard.setContent(board.getContent());
 
         Board createdBoard = boardService.insertBoard(requestedBoard);
         long createdId = createdBoard.getId();
