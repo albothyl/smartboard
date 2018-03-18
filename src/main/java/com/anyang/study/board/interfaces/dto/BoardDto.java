@@ -18,4 +18,6 @@ public class BoardDto {
     private String writer;
     private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
+    private String createdAt2;
+
 }

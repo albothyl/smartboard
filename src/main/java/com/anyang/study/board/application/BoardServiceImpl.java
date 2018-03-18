@@ -5,16 +5,26 @@ import com.anyang.study.board.domain.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Service("BoardService")
 public class BoardServiceImpl implements BoardService {
     @Autowired
     BoardRepository boardRepository;
 
     @Override
+    public List<Board> getBoardAll() {
+        List<Board> arrayList = new ArrayList<>();
+        arrayList =  boardRepository.findAll();
+        return arrayList;
+    }
+
+    @Override
     public Board getBoard(long id) {
         return null;
     }
-
     @Override
     public Board insertBoard(Board board) {
         return boardRepository.save(board);

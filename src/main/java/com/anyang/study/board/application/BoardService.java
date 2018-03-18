@@ -2,7 +2,12 @@ package com.anyang.study.board.application;
 
 import com.anyang.study.board.domain.Board;
 
+import java.util.List;
+
 public interface BoardService {
+    //게시판 목록을 가져온다.
+    List<Board> getBoardAll();
+
     //게시판 정보를 데이터베이스에서 읽어와 화면에 출력한다.
     Board getBoard(long id);
 
