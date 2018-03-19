@@ -3,6 +3,7 @@ package com.anyang.study.board.interfaces.controller;
 import com.anyang.study.board.application.BoardService;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.interfaces.dto.BoardDto;
+import com.anyang.study.board.interfaces.exception.NullBoardException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,20 +75,24 @@ public class BoardController {
     @RequestMapping(value = "/board/boardUpdate/{id}")
     public ModelAndView modify(@PathVariable(value = "id") long bid) {
         ModelAndView mav = new ModelAndView("boardUpdate");
+        try {
+            Board gotBoard = boardService.getBoard(bid);
 
-        Board gotBoard = boardService.getBoard(bid);
+            BoardDto gotBoardDto = BoardDto.builder()
+                    .id(gotBoard.getId())
+                    .title(gotBoard.getTitle())
+                    .content(gotBoard.getContent())
+                    .writer(gotBoard.getWriter())
+                    .modifiedAt(gotBoard.getModifiedAt())
+                    .createdAt(gotBoard.getCreatedAt()).build();
 
-        BoardDto gotBoardDto = BoardDto.builder()
-                .id(gotBoard.getId())
-                .title(gotBoard.getTitle())
-                .content(gotBoard.getContent())
-                .writer(gotBoard.getWriter())
-                .modifiedAt(gotBoard.getModifiedAt())
-                .createdAt(gotBoard.getCreatedAt()).build();
+            mav.addObject("board", gotBoardDto);
 
-        mav.addObject("board", gotBoardDto);
-
-        return mav;
+            return mav;
+        } catch (NullBoardException e) {
+            ModelAndView nullBoard = new ModelAndView("nullBoard");
+            return nullBoard;
+        }
     }
 
     //게시글등록 후 상세페이지로
