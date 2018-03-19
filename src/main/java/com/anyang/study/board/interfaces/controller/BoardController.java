@@ -77,13 +77,13 @@ public class BoardController {
 
         Board gotBoard = boardService.getBoard(bid);
 
-        BoardDto gotBoardDto = new BoardDto();
-        gotBoardDto.setId(gotBoard.getId());
-        gotBoardDto.setTitle(gotBoard.getTitle());
-        gotBoardDto.setContent(gotBoard.getContent());
-        gotBoardDto.setWriter(gotBoard.getWriter());
-        gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
-        gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
+        BoardDto gotBoardDto = BoardDto.builder()
+                .id(gotBoard.getId())
+                .title(gotBoard.getTitle())
+                .content(gotBoard.getContent())
+                .writer(gotBoard.getWriter())
+                .modifiedAt(gotBoard.getModifiedAt())
+                .createdAt(gotBoard.getCreatedAt()).build();
 
         mav.addObject("board", gotBoardDto);
 
@@ -94,15 +94,15 @@ public class BoardController {
     @RequestMapping(value = "/board/boardUpdate", method = POST)
     public String update(BoardDto board) {
 
-        Board requestedBoard = new Board();
-        requestedBoard.setId(board.getId());
-        requestedBoard.setTitle(board.getTitle());
-        requestedBoard.setWriter(board.getWriter());
-        requestedBoard.setContent(board.getContent());
+        Board willUpdateBoard = boardService.getBoard(board.getId());
 
-        Board createdBoard = boardService.insertBoard(requestedBoard);
-        long createdId = createdBoard.getId();
-        return "redirect:/board/boardDetail/" + createdId;
+        willUpdateBoard.setTitle(board.getTitle());
+        willUpdateBoard.setContent(board.getContent());
+        willUpdateBoard.setWriter(board.getWriter());
+
+        Board updatedBoard = boardService.insertBoard(willUpdateBoard);
+        long updatedId = updatedBoard.getId();
+        return "redirect:/board/boardDetail/" + updatedId;
 
     }
 
