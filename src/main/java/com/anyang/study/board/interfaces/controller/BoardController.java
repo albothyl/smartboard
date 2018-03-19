@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ public class BoardController {
         List<Board> gotBoardList = boardService.getBoardAll();
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
-
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
             BoardDto dto = new BoardDto();
@@ -50,10 +50,8 @@ public class BoardController {
             dto.setTitle(board.getTitle());
             dto.setContent(board.getContent());
             dto.setWriter(board.getWriter());
-            //  등록날짜 형식 변환
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");
-            String nowDate = board.getCreatedAt().format(dateTimeFormatter);
-            dto.setCreatedAt2(nowDate);
+            dto.setCreatedAt(board.getCreatedAt());
+            dto.setCreatedAt2(LocalDate.from(board.getCreatedAt()));
 
             dto.setModifiedAt(board.getModifiedAt());
             gotBoardDtoList.add(dto);

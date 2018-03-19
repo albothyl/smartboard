@@ -42,6 +42,7 @@ ext {
 //  Util ==================================
     lombokVersion = '1.16.10'
     guavaVersion = '19.0'
+    jacksonVersion = '2.9.4'
 
 //  Logging ===============================
     slf4jVersion = '1.7.21'
@@ -61,7 +62,7 @@ dependencies {
     compile "org.springframework.data:spring-data-jpa:${springDataJpaVersion}"
     compile "org.springframework:spring-aspects:${springVersion}"
 
-
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     compile "org.hibernate:hibernate-core:${hibernateVersion}"
     compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
 
