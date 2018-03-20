@@ -132,15 +132,15 @@ public class BoardController {
 
         Board gotBoard = boardService.getBoard(bid);
 
-        BoardDto gotBoardDto = new BoardDto();
-        gotBoardDto.setId(gotBoard.getId());
-        gotBoardDto.setTitle(gotBoard.getTitle());
-        gotBoardDto.setContent(gotBoard.getContent());
-        gotBoardDto.setWriter(gotBoard.getWriter());
-        gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
-        gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
+//        BoardDto gotBoardDto = new BoardDto();
+//        gotBoardDto.setId(gotBoard.getId());
+//        gotBoardDto.setTitle(gotBoard.getTitle());
+//        gotBoardDto.setContent(gotBoard.getContent());
+//        gotBoardDto.setWriter(gotBoard.getWriter());
+//        gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
+//        gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
 
-        mav.addObject("board", gotBoardDto);
+        mav.addObject("board", gotBoard);
 
         return mav;
     }
