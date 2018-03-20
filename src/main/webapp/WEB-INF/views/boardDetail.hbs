@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>게시글 상세</title>
+    </head>
+
+    <body>
+        <h1>게시판 상세</h1>
+        <tr>
+            <td>글번호 : {{board.id}}</td><br>
+            <td>작성자 : {{board.writer}}</td><br>
+            <td>제목 : {{board.title}}</td><br>
+            <td>내용 : {{board.content}}</td><br>
+            <td>작성일 : {{board.createdAt}}</td><br>
+            <td>수정일 : {{board.modifiedAt}}</td>
+        </tr>
+        <p>
+
+        <button><a href="/board/boardList">목록</a></button>
+        <button><a href="/board/boardUpdate/{{board.id}}">수정</a></button>
+        <button><a href="#" onclick="delchk({{board.id}});">삭제</a></button>
+
+    </body>
+</html>
+
+<script type="text/javascript">
+    function delchk(boardId){
+        if(confirm("삭제하시겠습니까?")){
+            location.href = "/board/boardDelete/" + boardId;
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+

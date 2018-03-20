@@ -124,4 +124,24 @@ public class BoardController {
 
         return mav;
     }
+
+
+    @RequestMapping(value = "/board/boardDetail/{id}")
+    public ModelAndView boardDetail(@PathVariable(value = "id") long bid) {
+        ModelAndView mav = new ModelAndView("boardDetail");
+
+        Board gotBoard = boardService.getBoard(bid);
+
+        BoardDto gotBoardDto = new BoardDto();
+        gotBoardDto.setId(gotBoard.getId());
+        gotBoardDto.setTitle(gotBoard.getTitle());
+        gotBoardDto.setContent(gotBoard.getContent());
+        gotBoardDto.setWriter(gotBoard.getWriter());
+        gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
+        gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
+
+        mav.addObject("board", gotBoardDto);
+
+        return mav;
+    }
 }
