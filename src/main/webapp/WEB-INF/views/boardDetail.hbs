@@ -3,6 +3,13 @@
         <title>게시글 상세</title>
     </head>
 
+    <script>
+        function onList() {
+            self.location.replace('/board/boardList');
+        }
+
+    </script>
+
     <body>
         <h1>게시판 상세</h1>
         <tr>
@@ -15,7 +22,7 @@
         </tr>
         <p>
 
-        <button><a href="/board/boardList">목록</a></button>
+        <button onclick=javascript:onList();>목록</button>
         <button><a href="/board/boardUpdate/{{board.id}}">수정</a></button>
         <button><a href="#" onclick="delchk({{board.id}});">삭제</a></button>
 
