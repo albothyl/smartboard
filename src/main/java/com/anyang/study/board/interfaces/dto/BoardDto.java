@@ -1,7 +1,7 @@
 package com.anyang.study.board.interfaces.dto;
 
 import lombok.*;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,6 +16,5 @@ public class BoardDto {
     private String writer;
     private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
-    private String createdAt2;
-
+    private LocalDate createdAt2;
 }
