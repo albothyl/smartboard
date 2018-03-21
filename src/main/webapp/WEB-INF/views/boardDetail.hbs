@@ -11,20 +11,14 @@
             var formObj = document.frm;
             if(formObj) {
                 formObj.action = "/board/boardUpdate/{{board.id}}";
-                formObj.method = "put";
                 formObj.submit();
             }
         }
 
     </script>
-
     <body>
-
-
-    <form name=frm id="formboard" method="get">
-        <input type='hidden' name='bno' value="${boardVO.bno}">
+    <form name=frm id="frm" method="get">
     </form>
-
         <h1>게시판 상세</h1>
         <table>
         <tr>
