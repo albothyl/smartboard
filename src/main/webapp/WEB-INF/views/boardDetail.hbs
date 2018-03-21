@@ -7,11 +7,22 @@
         function onList() {
             self.location.replace('/board/boardList');
         }
+
         function onModify() {
             var formObj = document.frm;
             if(formObj) {
                 formObj.action = "/board/boardUpdate/{{board.id}}";
                 formObj.submit();
+            }
+        }
+
+        function delchk(){
+            if(confirm("삭제하시겠습니까?")){
+               // location.href = "/board/boardDelete/{{board.id}}";
+                self.location.replace('/board/boardDelete/{{board.id}}');
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -32,21 +43,9 @@
         </table>
         <tr>
         <button onclick="onList();">목록</button>
-        <input type="button" name="수정" value="수정" onclick="onModify();"></input>
-        <button><a href="#" onclick="delchk({{board.id}});">삭제</a></button>
+        <input type="button" name="수정" value="수정" onclick="onModify();"/>
+        <button onclick="delchk();">삭제</button>
         </tr>
 
     </body>
 </html>
-
-<script type="text/javascript">
-    function delchk(boardId){
-        if(confirm("삭제하시겠습니까?")){
-            location.href = "/board/boardDelete/" + boardId;
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script>
-

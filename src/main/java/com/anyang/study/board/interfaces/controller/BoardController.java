@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -107,6 +108,14 @@ public class BoardController {
         Board updatedBoard = boardService.insertBoard(willUpdateBoard);
         long updatedId = updatedBoard.getId();
         return "redirect:/board/boardDetail/" + updatedId;
+    }
+
+    @RequestMapping(value = "/board/boardDelete/{id}" )
+    public String delete(@PathVariable(value = "id") long bid, RedirectAttributes rttr) {
+        boardService.deleteBoard(boardService.getBoard(bid));
+
+        rttr.addFlashAttribute("msg", "success");
+        return "redirect:/board/boardList";
     }
 
     @RequestMapping("/board/delete")
