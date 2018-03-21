@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class BoardController {
     //이전글 수정
     @RequestMapping(value = "/board/boardUpdate/{id}")
     public ModelAndView modify(@PathVariable(value = "id") long bid) {
-        ModelAndView mav = new ModelAndView("boardUpdate");
+        ModelAndView mav = null;
         try {
             Board gotBoard = boardService.getBoard(bid);
 
@@ -83,22 +82,24 @@ public class BoardController {
                     .writer(gotBoard.getWriter())
                     .modifiedAt(gotBoard.getModifiedAt())
                     .createdAt(gotBoard.getCreatedAt()).build();
-
+            mav = new ModelAndView("boardUpdate");
             mav.addObject("board", gotBoardDto);
-
-            return mav;
         } catch (NullBoardException e) {
-            ModelAndView nullBoard = new ModelAndView("nullBoard");
-            return nullBoard;
+            mav = new ModelAndView("nullBoard");
+        } finally {
+            return mav;
         }
     }
 
     //게시글등록 후 상세페이지로
     @RequestMapping(value = "/board/boardUpdate", method = POST)
     public String update(BoardDto board) {
-
-        Board willUpdateBoard = boardService.getBoard(board.getId());
-
+        Board willUpdateBoard;
+        if (board.getId() == null) {
+            willUpdateBoard = new Board();
+        } else {
+            willUpdateBoard = boardService.getBoard(board.getId());
+        }
         willUpdateBoard.setTitle(board.getTitle());
         willUpdateBoard.setContent(board.getContent());
         willUpdateBoard.setWriter(board.getWriter());
@@ -106,7 +107,6 @@ public class BoardController {
         Board updatedBoard = boardService.insertBoard(willUpdateBoard);
         long updatedId = updatedBoard.getId();
         return "redirect:/board/boardDetail/" + updatedId;
-
     }
 
     @RequestMapping("/board/delete")
@@ -132,6 +132,7 @@ public class BoardController {
 
         Board gotBoard = boardService.getBoard(bid);
 
+        gotBoard.setContent(gotBoard.getContent());
 //        BoardDto gotBoardDto = new BoardDto();
 //        gotBoardDto.setId(gotBoard.getId());
 //        gotBoardDto.setTitle(gotBoard.getTitle());
