@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -26,7 +26,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board getBoard(long id) throws NoSuchElementException {
+    public Board getBoard(long id) throws NullBoardException {
         try {
             Optional<Board> gotBoard = boardRepository.findById(id);
             Board foundBoard = gotBoard.get();
