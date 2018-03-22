@@ -139,18 +139,10 @@ public class BoardController {
     public ModelAndView boardDetail(@PathVariable(value = "id") long bid) {
         ModelAndView mav = new ModelAndView("boardDetail");
 
-        Board gotBoard = boardService.getBoard(bid);
+        Board board = boardService.getBoard(bid);
 
-        gotBoard.setContent(gotBoard.getContent());
-//        BoardDto gotBoardDto = new BoardDto();
-//        gotBoardDto.setId(gotBoard.getId());
-//        gotBoardDto.setTitle(gotBoard.getTitle());
-//        gotBoardDto.setContent(gotBoard.getContent());
-//        gotBoardDto.setWriter(gotBoard.getWriter());
-//        gotBoardDto.setModifiedAt(gotBoard.getModifiedAt());
-//        gotBoardDto.setCreatedAt(gotBoard.getCreatedAt());
-
-        mav.addObject("board", gotBoard);
+        board.setContent(board.getContent());
+        mav.addObject("board", board);
 
         return mav;
     }
