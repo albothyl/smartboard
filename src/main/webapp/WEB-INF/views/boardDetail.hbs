@@ -8,10 +8,30 @@
             self.location.replace('/board/boardList');
         }
 
-    </script>
+        function onModify() {
+            var formObj = document.frm;
+            if(formObj) {
+                formObj.action = "/board/boardUpdate/{{board.id}}";
+                formObj.submit();
+            }
+        }
 
+        function delchk(){
+            if(confirm("삭제하시겠습니까?")){
+               // location.href = "/board/boardDelete/{{board.id}}";
+                self.location.replace('/board/boardDelete/{{board.id}}');
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    </script>
     <body>
+    <form name=frm id="frm" method="get">
+    </form>
         <h1>게시판 상세</h1>
+        <table>
         <tr>
             <td>글번호 : {{board.id}}</td><br>
             <td>작성자 : {{board.writer}}</td><br>
@@ -20,23 +40,12 @@
             <td>작성일 : {{board.createdAt}}</td><br>
             <td>수정일 : {{board.modifiedAt}}</td>
         </tr>
-        <p>
-
-        <button onclick=javascript:onList();>목록</button>
-        <button><a href="/board/boardUpdate/{{board.id}}">수정</a></button>
-        <button><a href="#" onclick="delchk({{board.id}});">삭제</a></button>
+        </table>
+        <tr>
+        <button onclick="onList();">목록</button>
+        <input type="button" name="수정" value="수정" onclick="onModify();"/>
+        <button onclick="delchk();">삭제</button>
+        </tr>
 
     </body>
 </html>
-
-<script type="text/javascript">
-    function delchk(boardId){
-        if(confirm("삭제하시겠습니까?")){
-            location.href = "/board/boardDelete/" + boardId;
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script>
-
