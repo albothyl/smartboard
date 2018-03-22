@@ -25,17 +25,6 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @RequestMapping("/board")
-    public ModelAndView hello() {
-        log.info("come in initial controller");
-
-        ModelAndView mav = new ModelAndView("index");
-        mav.addObject("Title", "Hello111");
-        mav.addObject("Content", "Hello every one222");
-
-        return mav;
-    }
-
     //목록 가져오기
     @RequestMapping(value = "/board/boardList")
     public ModelAndView boardList() {
@@ -110,28 +99,12 @@ public class BoardController {
         return "redirect:/board/boardDetail/" + updatedId;
     }
 
-    @RequestMapping(value = "/board/boardDelete/{id}" )
+    @RequestMapping(value = "/board/boardDelete/{id}", method = POST)
     public String delete(@PathVariable(value = "id") long bid, RedirectAttributes rttr) {
         boardService.deleteBoard(boardService.getBoard(bid));
 
         rttr.addFlashAttribute("msg", "success");
         return "redirect:/board/boardList";
-    }
-
-    @RequestMapping("/board/delete")
-    public ModelAndView delete() {
-        log.info("board delete");
-        Board board = new Board();
-        Long id;
-        id = 12L;
-
-        board.setId(id);
-        boardService.deleteBoard(board);
-        ModelAndView mav = new ModelAndView("board");
-        mav.addObject("Title", "보드게시판");
-        mav.addObject("Content", "게시판 삭제되었습니다.");
-
-        return mav;
     }
 
 
