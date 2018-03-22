@@ -1,7 +1,5 @@
 package com.anyang.study.board.domain;
 
-import com.anyang.study.board.interfaces.support.time.CustomLocalDateTimeSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
