@@ -1,6 +1,7 @@
 package com.anyang.study.board.application;
 
 import com.anyang.study.board.domain.Board;
+import com.anyang.study.board.interfaces.exception.NullBoardException;
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
 import com.anyang.study.configuration.domain.DomainContextConfig;
 import org.junit.Ignore;
@@ -31,5 +32,24 @@ public class BoardServiceTest {
         Board insertedBoard = boardService.insertBoard(board);
 
         assertThat(insertedBoard.getId(), is(board.getId()));
+    }
+
+    @Test
+    public void get() {
+        Board board = new Board();
+        board.setTitle("제목");
+        board.setWriter("작성자");
+        board.setContent("내용");
+
+        Board insertedBoard = boardService.insertBoard(board);
+
+        Board gotBoard = boardService.getBoard(insertedBoard.getId());
+        assertThat(gotBoard.getId(), is(insertedBoard.getId()));
+    }
+
+    @Test(expected = NullBoardException.class)
+    public void nullBoardEx() {
+        long bid = -100;
+        Board gotBoard = boardService.getBoard(bid);
     }
 }

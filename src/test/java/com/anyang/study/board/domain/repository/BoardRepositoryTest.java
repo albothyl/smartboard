@@ -4,15 +4,13 @@ import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.domain.BoardRepository;
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
 import com.anyang.study.configuration.domain.DomainContextConfig;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
@@ -32,7 +30,6 @@ public class BoardRepositoryTest {
     }
 
     @Test
-    @Ignore
     public void delete() {
         Board board = new Board();
         board.setTitle("delete test");

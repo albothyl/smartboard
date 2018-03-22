@@ -76,4 +76,5 @@ dependencies {
 
     testCompile "junit:junit:${junitVerison}"
     testCompile "org.springframework:spring-test:${springVersion}"
+
 }
