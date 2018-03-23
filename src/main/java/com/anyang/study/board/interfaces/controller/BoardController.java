@@ -26,7 +26,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    //목록 가져오기
+    //목록 가져오기 - 정렬, 키워드 검색
     @RequestMapping(value = "/board/boardList/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
     public ModelAndView boardList(@PathVariable(value = "sortType") String sort,
                                   @PathVariable(value = "searchType") String searchtype,
@@ -63,7 +63,7 @@ public class BoardController {
     }
 
     //목록 가져오기
-    @RequestMapping(value = "/board/boardList/")
+    @RequestMapping(value = "/board/boardList")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
         List<Board> gotBoardList = boardService.getBoardAll(null,"","");
