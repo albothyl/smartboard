@@ -1,62 +1,101 @@
 <html>
-    <head>
-        <title>게시글 상세</title>
-    </head>
+<head>
+    <title>게시글 상세</title>
+</head>
 
-    <script>
-        function clickList() {
-            self.location.replace('/board/boardList');
-        }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-        function clickModify() {
-            var formObj = document.frm;
-            if(formObj) {
-                formObj.action = "/board/boardUpdate/{{board.id}}";
-                formObj.submit();
-            }
-        }
+<script>
+    $(document).ready(function () {
+        var content = "{{board.content}}";
+        $('#content').append(content);
+    });
 
-        function delchk(){
-            if(confirm("삭제하시겠습니까?")){
-               // location.href = "/board/boardDelete/{{board.id}}";
-                self.location.replace('/board/boardDelete/{{board.id}}');
-                return true;
-            } else {
-                return false;
-            }
+    function clickList() {
+        self.location.replace('/board');
+    }
+
+    function delchk() {
+        if (confirm("삭제하시겠습니까?")) {
+            $.ajax({
+                url: "/board/{{board.id}}",
+                type: "delete",
+                complete: function () {
+                    self.location.replace('/board');
+                }
+            })
+            return true;
+        } else {
+            return false;
         }
-    </script>
-    <body>
-    <form name=frm id="frm" method="get">
-    </form>
-        <h1>게시판 상세</h1>
-        <table>
+    }
+</script>
+<body>
+<div class="main_container">
+    <h1>게시판 상세</h1>
+    <table>
         <tr>
-            <td>글번호 : {{board.id}}</td>
+            <th>제목</th>
+            <td colspan="3">{{board.title}}</td>
+            <th>조회수</th>
+            <td>{{board.viewCnt}}</td>
         </tr>
         <tr>
-            <td>작성자 : {{board.writer}}</td>
+            <th>작성자</th>
+            <td>{{board.writer}}</td>
+            <th>작성일</th>
+            <td>{{board.createdAt}}</td>
+            <th>수정일</th>
+            <td>{{board.modifiedAt}}</td>
         </tr>
+        <td colspan="6">
+            <div id="content"></div>
+        </td>
         <tr>
-            <td>제목 : {{board.title}}</td>
-        </tr>
-        <tr>
-            <td>내용 : {{board.content}}</td>
-        </tr>
-        <tr>
-            <td>작성일 : {{board.createdAt}}</td>
-        </tr>
-        <tr>
-            <td>수정일 : {{board.modifiedAt}}</td>
-        </tr>
-        </table>
-        <tr>
-            <td height="100"></td>
-        </tr>
-        <tr>
-            <button onclick="clickList();">목록</button>
-            <input type="button" name="수정" value="수정" onclick="clickModify();"/>
-            <button onclick="delchk();">삭제</button>
-        </tr>
-    </body>
+    </table>
+    <div class="btns">
+        <button onclick="clickList();">목록</button>
+        <form method="post" action="/board/update" class="modify_btn">
+            <input type="hidden" name="id" value="{{board.id}}">
+            <input type="submit" value="수정">
+        </form>
+        <button class="delete_btn" onclick="delchk();">삭제</button>
+    </div>
+</div>
+</body>
 </html>
+
+<style>
+    body {
+        background-color: #eaeaea;
+    }
+
+    .main_container {
+        width: 1000px;
+        margin: auto;
+        background-color: white;
+    }
+
+    .btns {
+        width: 900px;
+        display: inline-block;
+    }
+
+    .delete_btn {
+        float: right;
+    }
+
+    .modify_btn {
+        float: right;
+        margin-right: 20px;
+    }
+
+    th {
+        width: 100px;
+    }
+
+    table {
+        width: 900px;
+        margin: auto;
+    }
+</style>

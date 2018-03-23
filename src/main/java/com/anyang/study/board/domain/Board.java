@@ -27,4 +27,5 @@ public class Board {
     private LocalDateTime modifiedAt;
     @CreatedDate
     private LocalDateTime createdAt;
+    private int viewCnt;
 }

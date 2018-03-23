@@ -3,59 +3,80 @@
     <title>게시글 업데이트</title>
 </head>
 <body>
-<form method="post" action="/board/boardUpdate">
-    <h1>게시판 등록&수정화면</h1>
-    <div>
-        <table>
-            <tr>
-                <th>제목</th>
-                <td>
-                    {{#if board}}
-                        <input type="text" name="title" value="{{board.title}}">
-                    {{else}}
-                        <input type="text" name="title" placeholder="제목을 입력하세요." value="{{board.title}}">
-                    {{/if}}
-                </td>
-            </tr>
-            <tr>
-                <th>작성자</th>
-                <td>
-                    {{#if board}}
-                        <input type="text" name="writer" value="{{board.writer}}">
-                    {{else}}
-                        <input type="text" name="writer" placeholder="작성자를 입력하세요." value="{{board.writer}}">
-                    {{/if}}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    {{#if board}}
-                        <textarea name="content" value="{{board.content}}">{{board.content}}</textarea>
-                    {{else}}
-                        <textarea name="content" placeholder="내용을 입력하세요." value="{{board.content}}"></textarea>
-                    {{/if}}
-                </td>
-            </tr>
-            {{#if board}}
-                <input type="hidden" name="id" value="{{board.id}}">
-            {{/if}}
-        </table>
-    </div>
-    <div>
-        {{#if board}}
-            <span><button><a href="/board/boardDetail/{{board.id}}">취소</a></button></span>
-        {{else}}
-            <span><button><a href="/board/boardList">취소</a></button></span>
-        {{/if}}
-        <span><input type="submit" value="작성"></span>
-    </div>
-</form>
+<div class="main_container">
+    {{#if board}}
+        <form method="post" action="/board/{{board.id}}">
+            <h1>게시판 수정화면</h1>
+            <div>
+                <table>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" name="title" value="{{board.title}}"></td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td><input type="text" name="writer" value="{{board.writer}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea name="content" value="{{board.content}}">{{board.content}}</textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <span><button><a href="/board/{{board.id}}">취소</a></button></span>
+                <span><input type="submit" value="작성"></span><!-- board/{id}에 POST로 -->
+            </div>
+        </form>
+
+
+    {{else}}
+        <form method="post" action="/board">
+            <h1>게시판 등록화면</h1>
+            <div>
+                <table>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" name="title" placeholder="제목을 입력하세요." value="{{board.title}}"></td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td><input type="text" name="writer" placeholder="작성자를 입력하세요." value="{{board.writer}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><textarea name="content" placeholder="내용을 입력하세요."
+                                                  value="{{board.content}}"></textarea></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <span><button><a href="/board">취소</a></button></span>
+                <span><input type="submit" value="작성"></span><!-- board에 POST로 -->
+            </div>
+        </form>
+    {{/if}}
+</div>
 </body>
 </html>
 
 <style type="text/css">
+    body {
+        background-color: #eaeaea;
+    }
+
+    .main_container {
+        width: 1000px;
+        margin: auto;
+        background-color: white;
+    }
+
+    th {
+        width: 100px;
+    }
+
     table {
-        width: 500px;
+        width: 900px;
+        margin: auto;
     }
 
     textarea[name="content"] {
@@ -73,3 +94,4 @@
         color: black;
     }
 </style>
+

@@ -18,4 +18,6 @@ public interface BoardService {
     //선택한 게시판 정보를 삭제한다.
     void deleteBoard(Board board);
 
+    //게시글 읽고 조회수 늘리기
+    Board readBoard(long id);
 }

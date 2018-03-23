@@ -4,13 +4,18 @@ import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.domain.BoardRepository;
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
 import com.anyang.study.configuration.domain.DomainContextConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
@@ -18,26 +23,53 @@ public class BoardRepositoryTest {
     @Autowired
     BoardRepository boardRepository;
 
-    @Test
-    public void insert() {
-        Board board = new Board();
-        board.setTitle("insert test");
-        board.setContent("insert content");
-        board.setWriter("insert writer");
-        Board savedBoard = boardRepository.save(board);
-        assertEquals(savedBoard.getId(), board.getId());
+    private static final int TOTAL_COUNT = 10;
 
+    @Before
+    public void setup() {
+        boardRepository.deleteAll();
+        boardRepository.flush();
+
+        for (int i = 0; i < TOTAL_COUNT; i++) {
+            Board board = new Board();
+            board.setTitle("insert test " + i);
+            board.setContent("insert content " + i);
+            board.setWriter("insert writer " + i);
+            boardRepository.save(board);
+        }
     }
 
     @Test
+    public void totalBoardListCount() {
+        List<Board> list = boardRepository.findAll();
+        assertThat(list.size(), is(TOTAL_COUNT));
+    }
+
+    @Test
+    public void modifyBoardId() {
+        List<Board> list = boardRepository.findAll();
+        Long id = 0L;
+        for (Board board : list) {
+            id = board.getId();
+        }
+        assertNotNull(id);
+    }
+    
+    @Test
     public void delete() {
-        Board board = new Board();
-        board.setTitle("delete test");
-        board.setContent("content");
-        board.setWriter("dhshin");
-        boardRepository.save(board);
-        assertEquals(1, boardRepository.count());
-        boardRepository.delete(board);
-        assertEquals(0, boardRepository.count());
+        List<Board> list = boardRepository.findAll();
+        Long beforeId = 0L;
+        for (Board board : list) {
+            beforeId = board.getId();
+        }
+        boardRepository.deleteById(beforeId);
+
+        list = boardRepository.findAll();
+        Long afterId = 0L;
+        for (Board board : list) {
+            afterId = board.getId();
+        }
+
+        assertThat(afterId+1L, is(beforeId));
     }
 }

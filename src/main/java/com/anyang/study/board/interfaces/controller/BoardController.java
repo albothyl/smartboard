@@ -10,14 +10,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Slf4j
 @Controller
@@ -27,18 +28,20 @@ public class BoardController {
     private BoardService boardService;
 
     //목록 가져오기 - 정렬, 키워드 검색
-    @RequestMapping(value = "/board/boardList/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
-    public ModelAndView boardList(@PathVariable(value = "sortType") String sort,
-                                  @PathVariable(value = "searchType") String searchtype,
-                                  @PathVariable(value = "searchKeyword") String searchkeyword) {
+    @RequestMapping(value = "/board/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
+    public ModelAndView boardSortList(@PathVariable(value = "sortType") String sort,
+                                      @PathVariable(value = "searchType") String searchtype,
+                                      @PathVariable(value = "searchKeyword") String searchkeyword) {
         ModelAndView mav = new ModelAndView("boardList");
         //List<Board> gotBoardList = boardService.getBoardAll(new Sort("writer"));
-        if(sort.isEmpty()) {
+        if (sort.isEmpty()) {
             sort = "id";
         }
         List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchtype, searchkeyword);
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
@@ -47,10 +50,9 @@ public class BoardController {
             dto.setTitle(board.getTitle());
             dto.setContent(board.getContent());
             dto.setWriter(board.getWriter());
-            dto.setCreatedAt(board.getCreatedAt());
-            dto.setCreatedAt2(LocalDate.from(board.getCreatedAt()));
-
-            dto.setModifiedAt(board.getModifiedAt());
+            dto.setCreatedAt(board.getCreatedAt().format(dateTimeFormatter));
+            dto.setModifiedAt(board.getModifiedAt().format(dateTimeFormatter));
+            dto.setViewCnt(board.getViewCnt());
             gotBoardDtoList.add(dto);
         }
         mav.addObject("list", gotBoardDtoList);
@@ -63,12 +65,15 @@ public class BoardController {
     }
 
     //목록 가져오기
-    @RequestMapping(value = "/board/boardList")
+    @RequestMapping(value = "/board", method = GET)
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = boardService.getBoardAll(null,"","");
+        List<Board> gotBoardList = boardService.getBoardAll(null, "", "");
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
             BoardDto dto = new BoardDto();
@@ -76,10 +81,9 @@ public class BoardController {
             dto.setTitle(board.getTitle());
             dto.setContent(board.getContent());
             dto.setWriter(board.getWriter());
-            dto.setCreatedAt(board.getCreatedAt());
-            dto.setCreatedAt2(LocalDate.from(board.getCreatedAt()));
-
-            dto.setModifiedAt(board.getModifiedAt());
+            dto.setCreatedAt(board.getCreatedAt().format(dateTimeFormatter));
+            dto.setModifiedAt(board.getModifiedAt().format(dateTimeFormatter));
+            dto.setViewCnt(board.getViewCnt());
             gotBoardDtoList.add(dto);
         }
         mav.addObject("list", gotBoardDtoList);
@@ -87,18 +91,15 @@ public class BoardController {
         return mav;
     }
 
-
-    //새글작성
-    @RequestMapping(value = "/board/boardUpdate")
-    public ModelAndView create() {
+    //게스글등록 폼
+    @RequestMapping(value = "/board/update", method = GET)
+    public ModelAndView updateFormGet() {
         ModelAndView mav = new ModelAndView("boardUpdate");
-
         return mav;
     }
 
-    //이전글 수정
-    @RequestMapping(value = "/board/boardUpdate/{id}")
-    public ModelAndView modify(@PathVariable(value = "id") long bid) {
+    @RequestMapping(value = "/board/update", method = POST)
+    public ModelAndView updateFormPost(@RequestParam(value = "id") long bid) {
         ModelAndView mav = null;
         try {
             Board gotBoard = boardService.getBoard(bid);
@@ -107,9 +108,7 @@ public class BoardController {
                     .id(gotBoard.getId())
                     .title(gotBoard.getTitle())
                     .content(gotBoard.getContent())
-                    .writer(gotBoard.getWriter())
-                    .modifiedAt(gotBoard.getModifiedAt())
-                    .createdAt(gotBoard.getCreatedAt()).build();
+                    .writer(gotBoard.getWriter()).build();
             mav = new ModelAndView("boardUpdate");
             mav.addObject("board", gotBoardDto);
         } catch (NullBoardException e) {
@@ -119,8 +118,22 @@ public class BoardController {
         }
     }
 
-    //게시글등록 후 상세페이지로
-    @RequestMapping(value = "/board/boardUpdate", method = POST)
+    //게시글등록
+    @RequestMapping(value = "/board", method = POST)
+    public String create(BoardDto board) {
+        Board willCreateBoard = new Board();
+
+        willCreateBoard.setTitle(board.getTitle());
+        willCreateBoard.setContent(board.getContent());
+        willCreateBoard.setWriter(board.getWriter());
+
+        Board createdBoard = boardService.insertBoard(willCreateBoard);
+        long createdId = createdBoard.getId();
+        return "redirect:/board/" + createdId;
+    }
+
+    //게시글수정
+    @RequestMapping(value = "/board/{id}", method = POST)
     public String update(BoardDto board) {
         Board willUpdateBoard;
         if (board.getId() == null) {
@@ -134,27 +147,40 @@ public class BoardController {
 
         Board updatedBoard = boardService.insertBoard(willUpdateBoard);
         long updatedId = updatedBoard.getId();
-        return "redirect:/board/boardDetail/" + updatedId;
+        return "redirect:/board/" + updatedId;
     }
 
-    @RequestMapping(value = "/board/boardDelete/{id}", method = POST)
+    //디테일
+    @RequestMapping(value = "/board/{id}", method = GET)
+    public ModelAndView boardDetail(@PathVariable(value = "id") long bid) {
+        ModelAndView mav = null;
+        try {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+
+            Board board = boardService.readBoard(bid);
+            BoardDto boardDto = BoardDto.builder()
+                    .writer(board.getWriter())
+                    .content(board.getContent().replaceAll(System.getProperty("line.separator"), "<br>"))
+                    .title(board.getTitle())
+                    .id(board.getId())
+                    .createdAt(board.getCreatedAt().format(dateTimeFormatter))
+                    .modifiedAt(board.getModifiedAt().format(dateTimeFormatter))
+                    .viewCnt(board.getViewCnt()).build();
+            mav = new ModelAndView("boardDetail");
+            mav.addObject("board", boardDto);
+        } catch (NullBoardException e) {
+            mav = new ModelAndView("nullBoard");
+        } finally {
+            return mav;
+        }
+    }
+
+    //삭제
+    @RequestMapping(value = "/board/{id}", method = DELETE)
     public String delete(@PathVariable(value = "id") long bid, RedirectAttributes rttr) {
         boardService.deleteBoard(boardService.getBoard(bid));
 
-        rttr.addFlashAttribute("msg", "success");
-        return "redirect:/board/boardList";
+        return "redirect:/board";
     }
 
-
-    @RequestMapping(value = "/board/boardDetail/{id}")
-    public ModelAndView boardDetail(@PathVariable(value = "id") long bid) {
-        ModelAndView mav = new ModelAndView("boardDetail");
-
-        Board board = boardService.getBoard(bid);
-
-        board.setContent(board.getContent());
-        mav.addObject("board", board);
-
-        return mav;
-    }
 }

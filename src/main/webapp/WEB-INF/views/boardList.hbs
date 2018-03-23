@@ -4,91 +4,119 @@
 </head>
 
 <script>
-        function clickWrite() {
-           self.location.replace('/board/boardUpdate');
+    function onSort(type) {
+        var temp = type.toString();
+        Console.log(temp)
+        if (temp == "") {
         }
-        function onSort(type) {
-            var temp = type.toString();
-            Console.log(temp)
-            if (temp == "") {
-            }
-            else {
-                var sortType = document.getElementById('sortType');
-
-                switch (temp){
-                    case "title" : sortType.options[1].selected = true;
-                    case "createdAt" : sortType.options[2].selected = true;
-                    default :  sortType.options[3].selected = true;
-                }
-            }
-        }
-
-        function clickSort() {
+        else {
             var sortType = document.getElementById('sortType');
-            self.location.replace('/board/boardList/sortType='+ sortType.value + "&searchType=&searchKeyword=" );
-        }
 
-        function clickSearch() {
-            var searchType = document.getElementById('searchType');
-            var searchKeyword = document.getElementById('searchKeyword');
-
-            self.location.replace('/board/boardList/sortType='+ sortType.value + "&searchType=" + searchType.value + "&searchKeyword=" + searchKeyword.value);
+            switch (temp) {
+                case "title" :
+                    sortType.options[1].selected = true;
+                case "createdAt" :
+                    sortType.options[2].selected = true;
+                default :
+                    sortType.options[3].selected = true;
+            }
         }
+    }
+
+    function clickSort() {
+        var sortType = document.getElementById('sortType');
+        self.location.replace('/board/sortType=' + sortType.value + "&searchType=&searchKeyword=");
+    }
+
+    function clickSearch() {
+        var searchType = document.getElementById('searchType');
+        var searchKeyword = document.getElementById('searchKeyword');
+
+        self.location.replace('/board/sortType=' + sortType.value + "&searchType=" + searchType.value + "&searchKeyword=" + searchKeyword.value);
+    }
 </script>
 
 <body>
-<h1>게시판 목록화면</h1>
-<div>정렬선택:
-    <select name="sortType" id="sortType" onchange="clickSort();">
-        <option value=""/>
-        ----</option>
-        <option value="title"/>
-        제목</option>
-        <option value="createdAt"/>
-        작성일</option>
-        <option value="modifiedAt"/>
-        수정일</option>
-        <option value="id"/>
-        번호</option>
-    </select>
+<div class="main_container">
+    <h1>게시판 목록화면</h1>
+    <div>정렬선택:
+        <select name="sortType" id="sortType" onchange="clickSort();">
+            <option value=""/>
+            ----</option>
+            <option value="title"/>
+            제목</option>
+            <option value="createdAt"/>
+            작성일</option>
+            <option value="modifiedAt"/>
+            수정일</option>
+            <option value="id"/>
+            번호</option>
+        </select>
 
-    검색선택:
-    <select name="searchType" id="searchType">
-        <option value=""/>
-        ----</option>
-        <option value="title"/>
-        제목</option>
-    </select>
-    <input type="text" name='keyword' id="searchKeyword" value={{searchkeyword}}>
-    <button id='searchBtn' onclick="clickSearch();">Search</button>
+        검색선택:
+        <select name="searchType" id="searchType">
+            <option value=""/>
+            ----</option>
+            <option value="title"/>
+            제목</option>
+        </select>
+        <input type="text" name='keyword' id="searchKeyword" value={{searchkeyword}}>
+        <button id='searchBtn' onclick="clickSearch();">Search</button>
     </div>
     <div>
         <table>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성날짜</th>
-        </tr>
-        </thead>
-        <tbody>
-        {{#each list}}
-        <tr>
-            <td>{{id}}</td>
-            <td><a href="/board/boardDetail/{{id}}">{{title}}</a></td>
-            <td>{{writer}}</td>
-            <td>{{createdAt2}}</td>
-        </tr>
-        {{/each}}
-        </tbody>
-    </table>
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th class="title">제목</th>
+                <th>작성자</th>
+                <th>작성날짜</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each list}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/board/{{id}}">{{title}}</a></td>
+                    <td>{{writer}}</td>
+                    <td>{{createdAt}}</td>
+                    <td>{{viewCnt}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <button><a href="/board/update">글쓰기</a></button>
+    </div>
+
 </div>
-
-<div>
-    <label><input type="button" name="create" value="글쓰기" onclick=javascript:clickWrite(); /></label>
-</div>
-
-
 </body>
 </html>
+
+<style>
+    body {
+        background-color: #eaeaea;
+    }
+
+    .main_container {
+        width: 1000px;
+        margin: auto;
+        background-color: white;
+    }
+
+    table {
+        margin: auto;
+    }
+
+    .title {
+        width: 600px;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+</style>

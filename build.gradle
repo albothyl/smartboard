@@ -49,6 +49,7 @@ ext {
 
 //  Test ==================================
     junitVerison = '4.12'
+    mockitoVersion = '2.13.0'
 }
 
 dependencies {
@@ -74,5 +75,6 @@ dependencies {
 
     testCompile "junit:junit:${junitVerison}"
     testCompile "org.springframework:spring-test:${springVersion}"
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
 
 }

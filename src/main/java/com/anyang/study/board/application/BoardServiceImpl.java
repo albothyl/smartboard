@@ -54,4 +54,12 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Board board) {
         boardRepository.delete(board);
     }
+
+    @Override
+    public Board readBoard(long id) throws NullBoardException {
+        Board readBoard = getBoard(id);
+        readBoard.setViewCnt(readBoard.getViewCnt() + 1);
+        Board insertBoard = insertBoard(readBoard);
+        return insertBoard;
+    }
 }
