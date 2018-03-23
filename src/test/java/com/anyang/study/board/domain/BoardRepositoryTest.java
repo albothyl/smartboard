@@ -20,7 +20,7 @@ public class BoardRepositoryTest {
     @Autowired
     BoardRepository boardRepository;
 
-    public static final int TOTAL_COUNT = 10;
+    private static final int TOTAL_COUNT = 10;
 
     @Before
     public void setup() {
@@ -45,7 +45,7 @@ public class BoardRepositoryTest {
     @Test
     public void modifyBoardId() {
         List<Board> list = boardRepository.findAll();
-        Long id = null;
+        Long id = 0L;
         for (Board board : list) {
             id = board.getId();
         }
@@ -55,19 +55,18 @@ public class BoardRepositoryTest {
     @Test
     public void delete() {
         List<Board> list = boardRepository.findAll();
-        Long id = null;
-        Long beforeId = null;
+        Long beforeId = 0L;
         for (Board board : list) {
             beforeId = board.getId();
         }
         boardRepository.deleteById(beforeId);
 
         list = boardRepository.findAll();
-        Long afterId = null;
+        Long afterId = 0L;
         for (Board board : list) {
             afterId = board.getId();
         }
 
-        assertThat(afterId+1, is(beforeId));
+        assertThat(afterId+1L, is(beforeId));
     }
 }
