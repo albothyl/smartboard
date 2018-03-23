@@ -8,13 +8,70 @@
             //self.locaion ="/board/boardUpdate";
             self.location.replace('/board/boardUpdate');
         }
+        function onSort(type) {
+            var temp = type.toString();
+            Console.log(temp)
+            if (temp == "") {
 
+            }
+            else {
+                var sortType = document.getElementById('sortType');
+
+                switch (temp){
+                    case "title" : sortType.options[1].selected = true;
+                    case "createdAt" : sortType.options[2].selected = true;
+                    default :  sortType.options[3].selected = true;
+                }
+            }
+        }
+
+        function clickSort() {
+            var sortType = document.getElementById('sortType');
+            self.location.replace('/board/boardList/sortType='+ sortType.value + "&searchType=&searchKeyword=" );
+        }
+
+        function clickSearch() {
+            var searchType = document.getElementById('searchType');
+            var searchKeyword = document.getElementById('searchKeyword');
+
+            self.location.replace('/board/boardList/sortType='+ sortType.value + "&searchType=" + searchType.value + "&searchKeyword=" + searchKeyword.value);
+        }
 </script>
 
 <body>
 <h1>게시판 목록화면</h1>
-<div>
-    <table>
+<div>정렬선택:
+    <select name="sortType" id="sortType" onchange="clickSort();">
+        <option value=""/>
+        ----</option>
+        <option value="title"/>
+        제목</option>
+        <option value="createdAt"/>
+        작성일</option>
+        <option value="modifiedAt"/>
+        수정일</option>
+        <option value="id"/>
+        번호</option>
+    </select>
+
+    검색선택:
+    <select name="searchType" id="searchType">
+        <option value=""/>
+        ----</option>
+        <option value="title"/>
+        제목</option>
+        <option value="createdAt"/>
+        작성일</option>
+        <option value="modifiedAt"/>
+        수정일</option>
+        <option value="id"/>
+        번호</option>
+    </select>
+    <input type="text" name='keyword' id="searchKeyword" value={{searchkeyword}}>
+    <button id='searchBtn' onclick="clickSearch();">Search</button>
+    </div>
+    <div>
+        <table>
         <thead>
         <tr>
             <th>번호</th>

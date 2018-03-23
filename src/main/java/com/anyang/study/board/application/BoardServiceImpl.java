@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -19,7 +20,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Board> getBoardAll() {
-        List<Board> arrayList = boardRepository.findAll();
+        List<Board> arrayList = new ArrayList<>();
+        arrayList = boardRepository.findAll();
         return arrayList;
     }
 
@@ -39,6 +41,10 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.save(board);
     }
 
+    @Override
+    public void updateBoard(Board board) {
+
+    }
 
     @Override
     public void deleteBoard(Board board) {

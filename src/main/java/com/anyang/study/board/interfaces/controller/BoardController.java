@@ -6,6 +6,7 @@ import com.anyang.study.board.interfaces.dto.BoardDto;
 import com.anyang.study.board.interfaces.exception.NullBoardException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +27,46 @@ public class BoardController {
     private BoardService boardService;
 
     //목록 가져오기
-    @RequestMapping(value = "/board/boardList")
+    @RequestMapping(value = "/board/boardList/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
+    public ModelAndView boardList(@PathVariable(value = "sortType") String sort,
+                                  @PathVariable(value = "searchType") String searchtype,
+                                  @PathVariable(value = "searchKeyword") String searchkeyword) {
+        ModelAndView mav = new ModelAndView("boardList");
+        //List<Board> gotBoardList = boardService.getBoardAll(new Sort("writer"));
+        if(sort.isEmpty()) {
+            sort = "id";
+        }
+
+        List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchtype, searchkeyword);
+
+        ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
+        for (int i = 0; i < gotBoardList.size(); i++) {
+            Board board = gotBoardList.get(i);
+            BoardDto dto = new BoardDto();
+            dto.setId(board.getId());
+            dto.setTitle(board.getTitle());
+            dto.setContent(board.getContent());
+            dto.setWriter(board.getWriter());
+            dto.setCreatedAt(board.getCreatedAt());
+            dto.setCreatedAt2(LocalDate.from(board.getCreatedAt()));
+
+            dto.setModifiedAt(board.getModifiedAt());
+            gotBoardDtoList.add(dto);
+        }
+        mav.addObject("list", gotBoardDtoList);
+
+        mav.addObject("sorttype", sort);
+        mav.addObject("strsearchtype", searchtype);
+        mav.addObject("searchkeyword", searchkeyword);
+
+        return mav;
+    }
+
+    //목록 가져오기
+    @RequestMapping(value = "/board/boardList/")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = boardService.getBoardAll();
+        List<Board> gotBoardList = boardService.getBoardAll(null, "", "");
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
         for (int i = 0; i < gotBoardList.size(); i++) {
