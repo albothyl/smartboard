@@ -25,6 +25,7 @@ public class BoardRepositoryTest {
 
     private static final int TOTAL_COUNT = 10;
 
+    //초기 설정 디비 전체 삭제후 10건 추가
     @Before
     public void setup() {
         boardRepository.deleteAll();
@@ -39,12 +40,14 @@ public class BoardRepositoryTest {
         }
     }
 
+    //전체 리스트 조회
     @Test
     public void testBoardAllList() {
         List<Board> list = boardRepository.findAll();
         assertThat(list.size(), is(TOTAL_COUNT));
     }
 
+    //특정 아이디 존재 여부
     @Test
     public void testBoardModifyId() {
         List<Board> list = boardRepository.findAll();
@@ -54,7 +57,8 @@ public class BoardRepositoryTest {
         }
         assertNotNull(id);
     }
-    
+
+    //마지막 리스트 삭제후 비교
     @Test
     public void testBoardOneDelete() {
         List<Board> list = boardRepository.findAll();
