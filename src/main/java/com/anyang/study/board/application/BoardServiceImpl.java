@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
-        List<Board> arrayList = new ArrayList<>();
+        List<Board> arrayList;
 
        if(sort == null) {
            if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
