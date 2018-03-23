@@ -4,15 +4,13 @@
 </head>
 
 <script>
-        function onWrite() {
-            //self.locaion ="/board/boardUpdate";
-            self.location.replace('/board/boardUpdate');
+        function clickWrite() {
+           self.location.replace('/board/boardUpdate');
         }
         function onSort(type) {
             var temp = type.toString();
             Console.log(temp)
             if (temp == "") {
-
             }
             else {
                 var sortType = document.getElementById('sortType');
@@ -60,12 +58,6 @@
         ----</option>
         <option value="title"/>
         제목</option>
-        <option value="createdAt"/>
-        작성일</option>
-        <option value="modifiedAt"/>
-        수정일</option>
-        <option value="id"/>
-        번호</option>
     </select>
     <input type="text" name='keyword' id="searchKeyword" value={{searchkeyword}}>
     <button id='searchBtn' onclick="clickSearch();">Search</button>
@@ -94,7 +86,7 @@
 </div>
 
 <div>
-    <label><input type="button" name="create" value="글쓰기" onclick=javascript:onWrite(); /></label>
+    <label><input type="button" name="create" value="글쓰기" onclick=javascript:clickWrite(); /></label>
 </div>
 
 

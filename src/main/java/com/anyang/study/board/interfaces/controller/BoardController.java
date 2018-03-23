@@ -36,10 +36,10 @@ public class BoardController {
         if(sort.isEmpty()) {
             sort = "id";
         }
-
         List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchtype, searchkeyword);
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
+
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
             BoardDto dto = new BoardDto();

@@ -23,11 +23,13 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
         List<Board> arrayList = new ArrayList<>();
 
-        if(sort == null) {
-           arrayList = boardRepository.findAll();
+       if(sort == null) {
+           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
+            else arrayList = boardRepository.findAllByTitle(searchkeyword);
         }
         else {
-            arrayList = boardRepository.findAll(sort);
+           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
+           else  arrayList = boardRepository.findAllByTitleSort(searchkeyword, sort.toString());
         }
         return arrayList;
     }
