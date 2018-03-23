@@ -34,7 +34,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void testConroller() throws Exception {
+    public void testController() throws Exception {
 
         // @RunWith(SpringJUnit4ClassRunner.class)
         // spring에서 제공하는 junit 테스트러너를 통한 테스트
