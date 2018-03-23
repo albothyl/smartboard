@@ -4,11 +4,11 @@
     </head>
 
     <script>
-        function onList() {
+        function clickList() {
             self.location.replace('/board/boardList');
         }
 
-        function onModify() {
+        function clickModify() {
             var formObj = document.frm;
             if(formObj) {
                 formObj.action = "/board/boardUpdate/{{board.id}}";
@@ -25,7 +25,6 @@
                 return false;
             }
         }
-
     </script>
     <body>
     <form name=frm id="frm" method="get">
@@ -33,19 +32,31 @@
         <h1>게시판 상세</h1>
         <table>
         <tr>
-            <td>글번호 : {{board.id}}</td><br>
-            <td>작성자 : {{board.writer}}</td><br>
-            <td>제목 : {{board.title}}</td><br>
-            <td>내용 : {{board.content}}</td><br>
-            <td>작성일 : {{board.createdAt}}</td><br>
+            <td>글번호 : {{board.id}}</td>
+        </tr>
+        <tr>
+            <td>작성자 : {{board.writer}}</td>
+        </tr>
+        <tr>
+            <td>제목 : {{board.title}}</td>
+        </tr>
+        <tr>
+            <td>내용 : {{board.content}}</td>
+        </tr>
+        <tr>
+            <td>작성일 : {{board.createdAt}}</td>
+        </tr>
+        <tr>
             <td>수정일 : {{board.modifiedAt}}</td>
         </tr>
         </table>
         <tr>
-        <button onclick="onList();">목록</button>
-        <input type="button" name="수정" value="수정" onclick="onModify();"/>
-        <button onclick="delchk();">삭제</button>
+            <td height="100"></td>
         </tr>
-
+        <tr>
+            <button onclick="clickList();">목록</button>
+            <input type="button" name="수정" value="수정" onclick="clickModify();"/>
+            <button onclick="delchk();">삭제</button>
+        </tr>
     </body>
 </html>

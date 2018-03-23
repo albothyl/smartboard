@@ -5,6 +5,7 @@ import com.anyang.study.board.domain.BoardRepository;
 import com.anyang.study.board.interfaces.exception.NullBoardException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,9 +20,17 @@ public class BoardServiceImpl implements BoardService {
     BoardRepository boardRepository;
 
     @Override
-    public List<Board> getBoardAll() {
+    public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
         List<Board> arrayList = new ArrayList<>();
-        arrayList = boardRepository.findAll();
+
+       if(sort == null) {
+           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
+            else arrayList = boardRepository.findAllByTitle(searchkeyword);
+        }
+        else {
+           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
+           else  arrayList = boardRepository.findAllByTitleSort(searchkeyword, sort.toString());
+        }
         return arrayList;
     }
 
@@ -39,11 +48,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board insertBoard(Board board) {
         return boardRepository.save(board);
-    }
-
-    @Override
-    public void updateBoard(Board board) {
-
     }
 
     @Override
