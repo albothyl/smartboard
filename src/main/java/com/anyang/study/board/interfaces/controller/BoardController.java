@@ -66,7 +66,7 @@ public class BoardController {
     @RequestMapping(value = "/board/boardList/")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = boardService.getBoardAll(null, "", "");
+        List<Board> gotBoardList = boardService.getBoardAll(null,"","");
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
         for (int i = 0; i < gotBoardList.size(); i++) {
@@ -86,6 +86,7 @@ public class BoardController {
 
         return mav;
     }
+
 
     //새글작성
     @RequestMapping(value = "/board/boardUpdate")
