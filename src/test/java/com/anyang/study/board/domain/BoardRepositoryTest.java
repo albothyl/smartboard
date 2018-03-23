@@ -3,8 +3,10 @@ package com.anyang.study.board.domain;
 import com.anyang.study.configuration.domain.ConfigurationApplicationContextInitializer;
 import com.anyang.study.configuration.domain.DomainContextConfig;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,9 +18,10 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BoardRepositoryTest {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     private static final int TOTAL_COUNT = 10;
 
@@ -37,13 +40,13 @@ public class BoardRepositoryTest {
     }
 
     @Test
-    public void totalBoardListCount() {
+    public void testBoardAllList() {
         List<Board> list = boardRepository.findAll();
         assertThat(list.size(), is(TOTAL_COUNT));
     }
 
     @Test
-    public void modifyBoardId() {
+    public void testBoardModifyId() {
         List<Board> list = boardRepository.findAll();
         Long id = 0L;
         for (Board board : list) {
@@ -53,7 +56,7 @@ public class BoardRepositoryTest {
     }
     
     @Test
-    public void delete() {
+    public void testBoardOneDelete() {
         List<Board> list = boardRepository.findAll();
         Long beforeId = 0L;
         for (Board board : list) {
