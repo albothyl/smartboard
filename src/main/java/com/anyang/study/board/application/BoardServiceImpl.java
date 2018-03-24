@@ -22,19 +22,18 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
         List<Board> arrayList;
 
-       if(sort == null) {
-           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
+        if (sort == null) {
+            if (searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
             else arrayList = boardRepository.findAllByTitle(searchkeyword);
-        }
-        else {
-           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
-           else  arrayList = boardRepository.findAllByTitleSort(searchkeyword, sort.toString());
+        } else {
+            if (searchkeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
+            else arrayList = boardRepository.findAllByTitleSort(searchkeyword, sort.toString());
         }
         return arrayList;
     }
 
     @Override
-    public Board getBoard(long id) throws NullBoardException {
+    public Board getBoard(Long id) throws NullBoardException {
         try {
             Optional<Board> gotBoard = boardRepository.findById(id);
             Board foundBoard = gotBoard.get();
