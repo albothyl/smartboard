@@ -14,5 +14,4 @@ public class BoardDto {
     private String writer;
     private String modifiedAt;
     private String createdAt;
-    private int viewCnt;
 }

@@ -52,7 +52,6 @@ public class BoardController {
             dto.setWriter(board.getWriter());
             dto.setCreatedAt(board.getCreatedAt().format(dateTimeFormatter));
             dto.setModifiedAt(board.getModifiedAt().format(dateTimeFormatter));
-            dto.setViewCnt(board.getViewCnt());
             gotBoardDtoList.add(dto);
         }
         mav.addObject("list", gotBoardDtoList);
@@ -65,7 +64,7 @@ public class BoardController {
     }
 
     //목록 가져오기
-    @RequestMapping(value = "/board", method = GET)
+    @RequestMapping(value = "/boards", method = GET)
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
         List<Board> gotBoardList = boardService.getBoardAll(null, "", "");
@@ -83,7 +82,6 @@ public class BoardController {
             dto.setWriter(board.getWriter());
             dto.setCreatedAt(board.getCreatedAt().format(dateTimeFormatter));
             dto.setModifiedAt(board.getModifiedAt().format(dateTimeFormatter));
-            dto.setViewCnt(board.getViewCnt());
             gotBoardDtoList.add(dto);
         }
         mav.addObject("list", gotBoardDtoList);
@@ -165,7 +163,7 @@ public class BoardController {
                     .id(board.getId())
                     .createdAt(board.getCreatedAt().format(dateTimeFormatter))
                     .modifiedAt(board.getModifiedAt().format(dateTimeFormatter))
-                    .viewCnt(board.getViewCnt()).build();
+                    .build();
             mav = new ModelAndView("boardDetail");
             mav.addObject("board", boardDto);
         } catch (NullBoardException e) {
@@ -180,7 +178,7 @@ public class BoardController {
     public String delete(@PathVariable(value = "id") long bid, RedirectAttributes rttr) {
         boardService.deleteBoard(boardService.getBoard(bid));
 
-        return "redirect:/board";
+        return "redirect:/boards";
     }
 
 }
