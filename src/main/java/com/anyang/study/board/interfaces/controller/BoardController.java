@@ -37,20 +37,7 @@ public class BoardController {
         }
         List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchType, searchKeyword);
 
-        List<BoardDto> gotBoardDtoList = new ArrayList<>();
-
-        for (Board board : gotBoardList) {
-            BoardDto gotBoardDto = BoardDto.builder()
-                    .id(board.getId())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .writer(board.getWriter())
-                    .modifiedAt(board.getModifiedAt())
-                    .createdAt(board.getCreatedAt())
-                    .createdAt2(LocalDate.from(board.getCreatedAt()))
-                    .build();
-            gotBoardDtoList.add(gotBoardDto);
-        }
+        List<BoardDto> gotBoardDtoList = getBoardDtos(gotBoardList);
 
         mav.addObject("list", gotBoardDtoList);
 
@@ -61,25 +48,13 @@ public class BoardController {
         return mav;
     }
 
+
     //목록 가져오기
     @RequestMapping(value = "/board/boardList")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
         List<Board> gotBoardList = boardService.getBoardAll(null, "", "");
-        List<BoardDto> gotBoardDtoList = new ArrayList<>();
-
-        for (Board board : gotBoardList) {
-            BoardDto gotBoardDto = BoardDto.builder()
-                    .id(board.getId())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .writer(board.getWriter())
-                    .modifiedAt(board.getModifiedAt())
-                    .createdAt(board.getCreatedAt())
-                    .createdAt2(LocalDate.from(board.getCreatedAt()))
-                    .build();
-            gotBoardDtoList.add(gotBoardDto);
-        }
+        List<BoardDto> gotBoardDtoList = getBoardDtos(gotBoardList);
         mav.addObject("list", gotBoardDtoList);
 
         return mav;
@@ -154,5 +129,24 @@ public class BoardController {
         mav.addObject("board", board);
 
         return mav;
+    }
+
+
+    private List<BoardDto> getBoardDtos(List<Board> gotBoardList) {
+        List<BoardDto> gotBoardDtoList = new ArrayList<>();
+
+        for (Board board : gotBoardList) {
+            BoardDto gotBoardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .modifiedAt(board.getModifiedAt())
+                    .createdAt(board.getCreatedAt())
+                    .createdAt2(LocalDate.from(board.getCreatedAt()))
+                    .build();
+            gotBoardDtoList.add(gotBoardDto);
+        }
+        return gotBoardDtoList;
     }
 }
