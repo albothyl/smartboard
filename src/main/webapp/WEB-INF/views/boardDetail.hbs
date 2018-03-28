@@ -18,7 +18,7 @@
     function delchk() {
         if (confirm("삭제하시겠습니까?")) {
             $.ajax({
-                url: "/board/{{board.id}}",
+                url: "/boards/{{board.id}}",
                 type: "delete",
                 complete: function () {
                     self.location.replace('/board');
@@ -32,6 +32,7 @@
 </script>
 <body>
 <div class="main_container">
+    <h1>게시판 상세</h1>
     <h1>게시판 상세</h1>
     <table>
         <tr>
@@ -55,8 +56,7 @@
     </table>
     <div class="btns">
         <button onclick="clickList();">목록</button>
-        <form method="post" action="/board/update" class="modify_btn">
-            <input type="hidden" name="id" value="{{board.id}}">
+        <form method="post" action="/board/{{board.id}}/editForm" class="modify_btn">
             <input type="submit" value="수정">
         </form>
         <button class="delete_btn" onclick="delchk();">삭제</button>
