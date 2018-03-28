@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-//요거 단위테스트 안됩니다...
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
 public class BoardServiceTest {
@@ -24,10 +23,11 @@ public class BoardServiceTest {
     @Test
     @Ignore
     public void insert() {
-        Board board = new Board();
-        board.setTitle("제목");
-        board.setWriter("작성자");
-        board.setContent("내용");
+        Board board = Board.builder()
+                .title("제목")
+                .writer("작성자")
+                .content("내용")
+                .build();
 
         Board insertedBoard = boardService.insertBoard(board);
 
@@ -36,10 +36,11 @@ public class BoardServiceTest {
 
     @Test
     public void get() {
-        Board board = new Board();
-        board.setTitle("제목");
-        board.setWriter("작성자");
-        board.setContent("내용");
+        Board board = Board.builder()
+                .title("제목")
+                .writer("작성자")
+                .content("내용")
+                .build();
 
         Board insertedBoard = boardService.insertBoard(board);
 

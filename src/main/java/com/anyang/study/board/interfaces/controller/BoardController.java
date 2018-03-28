@@ -27,17 +27,15 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    //목록 가져오기 - 정렬, 키워드 검색
     @RequestMapping(value = "/board/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
     public ModelAndView boardSortList(@PathVariable(value = "sortType") String sort,
-                                      @PathVariable(value = "searchType") String searchtype,
-                                      @PathVariable(value = "searchKeyword") String searchkeyword) {
+                                      @PathVariable(value = "searchType") String searchType,
+                                      @PathVariable(value = "searchKeyword") String searchKeyword) {
         ModelAndView mav = new ModelAndView("boardList");
-        //List<Board> gotBoardList = boardService.getBoardAll(new Sort("writer"));
         if (sort.isEmpty()) {
             sort = "id";
         }
-        List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchtype, searchkeyword);
+        List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchType, searchKeyword);
 
         ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
 
@@ -45,25 +43,25 @@ public class BoardController {
 
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
-            BoardDto dto = new BoardDto();
-            dto.setId(board.getId());
-            dto.setTitle(board.getTitle());
-            dto.setContent(board.getContent());
-            dto.setWriter(board.getWriter());
-            dto.setCreatedAt(board.getCreatedAt().format(dateTimeFormatter));
-            dto.setModifiedAt(board.getModifiedAt().format(dateTimeFormatter));
-            gotBoardDtoList.add(dto);
+            BoardDto boardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .createdAt(board.getCreatedAt().format(dateTimeFormatter))
+                    .modifiedAt(board.getModifiedAt().format(dateTimeFormatter))
+                    .build();
+            gotBoardDtoList.add(boardDto);
         }
         mav.addObject("list", gotBoardDtoList);
 
         mav.addObject("sorttype", sort);
-        mav.addObject("strsearchtype", searchtype);
-        mav.addObject("searchkeyword", searchkeyword);
+        mav.addObject("strsearchtype", searchType);
+        mav.addObject("searchkeyword", searchKeyword);
 
         return mav;
     }
 
-    //목록 가져오기
     @RequestMapping(value = "/boards", method = GET)
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
@@ -75,21 +73,21 @@ public class BoardController {
 
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
-            BoardDto dto = new BoardDto();
-            dto.setId(board.getId());
-            dto.setTitle(board.getTitle());
-            dto.setContent(board.getContent());
-            dto.setWriter(board.getWriter());
-            dto.setCreatedAt(board.getCreatedAt().format(dateTimeFormatter));
-            dto.setModifiedAt(board.getModifiedAt().format(dateTimeFormatter));
-            gotBoardDtoList.add(dto);
+            BoardDto boardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .createdAt(board.getCreatedAt().format(dateTimeFormatter))
+                    .modifiedAt(board.getModifiedAt().format(dateTimeFormatter))
+                    .build();
+            gotBoardDtoList.add(boardDto);
         }
         mav.addObject("list", gotBoardDtoList);
 
         return mav;
     }
 
-    //게스글등록 폼
     @RequestMapping(value = "/board/update", method = GET)
     public ModelAndView updateFormGet() {
         ModelAndView mav = new ModelAndView("boardUpdate");
@@ -97,10 +95,10 @@ public class BoardController {
     }
 
     @RequestMapping(value = "/board/update", method = POST)
-    public ModelAndView updateFormPost(@RequestParam(value = "id") long bid) {
+    public ModelAndView updateFormPost(@RequestParam(value = "id") Long boardId) {
         ModelAndView mav = null;
         try {
-            Board gotBoard = boardService.getBoard(bid);
+            Board gotBoard = boardService.getBoard(boardId);
 
             BoardDto gotBoardDto = BoardDto.builder()
                     .id(gotBoard.getId())
@@ -116,46 +114,50 @@ public class BoardController {
         }
     }
 
-    //게시글등록
     @RequestMapping(value = "/board", method = POST)
     public String create(BoardDto board) {
-        Board willCreateBoard = new Board();
 
-        willCreateBoard.setTitle(board.getTitle());
-        willCreateBoard.setContent(board.getContent());
-        willCreateBoard.setWriter(board.getWriter());
+        Board willCreateBoard = Board.builder()
+                .title(board.getTitle())
+                .content(board.getContent())
+                .writer(board.getWriter())
+                .build();
 
         Board createdBoard = boardService.insertBoard(willCreateBoard);
-        long createdId = createdBoard.getId();
+        Long createdId = createdBoard.getId();
         return "redirect:/board/" + createdId;
     }
 
-    //게시글수정
     @RequestMapping(value = "/board/{id}", method = POST)
     public String update(BoardDto board) {
         Board willUpdateBoard;
         if (board.getId() == null) {
-            willUpdateBoard = new Board();
+            willUpdateBoard = Board.builder()
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .build();
         } else {
             willUpdateBoard = boardService.getBoard(board.getId());
+            willUpdateBoard = Board.builder()
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .build();
         }
-        willUpdateBoard.setTitle(board.getTitle());
-        willUpdateBoard.setContent(board.getContent());
-        willUpdateBoard.setWriter(board.getWriter());
 
         Board updatedBoard = boardService.insertBoard(willUpdateBoard);
-        long updatedId = updatedBoard.getId();
+        Long updatedId = updatedBoard.getId();
         return "redirect:/board/" + updatedId;
     }
 
-    //디테일
     @RequestMapping(value = "/board/{id}", method = GET)
-    public ModelAndView boardDetail(@PathVariable(value = "id") long bid) {
+    public ModelAndView boardDetail(@PathVariable(value = "id") Long boardId) {
         ModelAndView mav = null;
         try {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
-            Board board = boardService.readBoard(bid);
+            Board board = boardService.getBoard(boardId);
             BoardDto boardDto = BoardDto.builder()
                     .writer(board.getWriter())
                     .content(board.getContent().replaceAll(System.getProperty("line.separator"), "<br>"))
@@ -173,10 +175,9 @@ public class BoardController {
         }
     }
 
-    //삭제
     @RequestMapping(value = "/board/{id}", method = DELETE)
-    public String delete(@PathVariable(value = "id") long bid, RedirectAttributes rttr) {
-        boardService.deleteBoard(boardService.getBoard(bid));
+    public String delete(@PathVariable(value = "id") Long boardId, RedirectAttributes rttr) {
+        boardService.deleteBoard(boardService.getBoard(boardId));
 
         return "redirect:/boards";
     }

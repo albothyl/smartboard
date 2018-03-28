@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -20,22 +19,21 @@ public class BoardServiceImpl implements BoardService {
     BoardRepository boardRepository;
 
     @Override
-    public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
-        List<Board> arrayList = new ArrayList<>();
+    public List<Board> getBoardAll(Sort sort, String searchType, String searchKeyword) {
+        List<Board> arrayList;
 
-       if(sort == null) {
-           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
-            else arrayList = boardRepository.findAllByTitle(searchkeyword);
-        }
-        else {
-           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
-           else  arrayList = boardRepository.findAllByTitleSort(searchkeyword, sort.toString());
+        if (sort == null) {
+            if (searchKeyword.isEmpty()) arrayList = boardRepository.findAll();
+            else arrayList = boardRepository.findAllByTitle(searchKeyword);
+        } else {
+            if (searchKeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
+            else arrayList = boardRepository.findAllByTitleSort(searchKeyword, sort.toString());
         }
         return arrayList;
     }
 
     @Override
-    public Board getBoard(long id) throws NullBoardException {
+    public Board getBoard(Long id) {
         try {
             Optional<Board> gotBoard = boardRepository.findById(id);
             Board foundBoard = gotBoard.get();
@@ -55,11 +53,4 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.delete(board);
     }
 
-    @Override
-    public Board readBoard(long id) throws NullBoardException {
-        Board readBoard = getBoard(id);
-        readBoard.setViewCnt(readBoard.getViewCnt() + 1);
-        Board insertBoard = insertBoard(readBoard);
-        return insertBoard;
-    }
 }

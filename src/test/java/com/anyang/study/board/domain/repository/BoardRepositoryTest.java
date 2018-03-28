@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(initializers = ConfigurationApplicationContextInitializer.class, classes = {DomainContextConfig.class})
 public class BoardRepositoryTest {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     private static final int TOTAL_COUNT = 10;
 
@@ -31,10 +31,12 @@ public class BoardRepositoryTest {
         boardRepository.flush();
 
         for (int i = 0; i < TOTAL_COUNT; i++) {
-            Board board = new Board();
-            board.setTitle("insert test " + i);
-            board.setContent("insert content " + i);
-            board.setWriter("insert writer " + i);
+            Board board = Board.builder()
+                    .title("insert test " + i)
+                    .content("insert content " + i)
+                    .writer("insert writer " + i)
+                    .build();
+
             boardRepository.save(board);
         }
     }

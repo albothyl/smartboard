@@ -1,11 +1,9 @@
 package com.anyang.study.board.interfaces.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor(staticName = "create")
 @Builder
 public class BoardDto {
     private Long id;

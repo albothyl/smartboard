@@ -1,6 +1,7 @@
 package com.anyang.study.board.domain;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,10 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor(staticName = "create")
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {

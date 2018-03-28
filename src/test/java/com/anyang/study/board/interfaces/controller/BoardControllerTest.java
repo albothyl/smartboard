@@ -56,18 +56,21 @@ public class BoardControllerTest {
     @Test
     public void modifyTest() throws Exception {
         mockMvc.perform(get("/board/boardUpdate/1")).andExpect(status().isOk());
-        verify(boardService).getBoard(1);
+        verify(boardService).getBoard((long) 1);
         verifyNoMoreInteractions(boardService);
     }
 
     @Test
     public void updateTest() throws Exception {
-        Board willUpdateBoard = new Board();
         mockMvc.perform(post("/board/boardUpdate").requestAttr("boardDto", boardDto)).andExpect(status().isOk());
-        verify(boardService).getBoard(-1);
-        willUpdateBoard.setTitle(boardDto.getTitle());
-        willUpdateBoard.setContent(boardDto.getContent());
-        willUpdateBoard.setWriter(boardDto.getWriter());
+        verify(boardService).getBoard((long) -1);
+
+        Board willUpdateBoard = Board.builder()
+                .title(boardDto.getTitle())
+                .content(boardDto.getContent())
+                .writer(boardDto.getWriter())
+                .build();
+
         verify(boardService).insertBoard(willUpdateBoard);
         verifyNoMoreInteractions(boardService);
 
