@@ -3,7 +3,6 @@ package com.anyang.study.board.application;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.domain.BoardRepository;
 import com.anyang.study.board.interfaces.exception.NullBoardException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -12,9 +11,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@Slf4j
-@Service("BoardService")
-public class BoardServiceImpl implements BoardService {
+@Service
+public class GetServiceImpl implements GetService {
     @Autowired
     BoardRepository boardRepository;
 
@@ -42,15 +40,4 @@ public class BoardServiceImpl implements BoardService {
             throw new NullBoardException();
         }
     }
-
-    @Override
-    public Board insertBoard(Board board) {
-        return boardRepository.save(board);
-    }
-
-    @Override
-    public void deleteBoard(Board board) {
-        boardRepository.delete(board);
-    }
-
 }

@@ -5,13 +5,10 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public interface BoardService {
+public interface GetService {
     List<Board> getBoardAll(Sort sort, String searchType, String searchKeyword);
 
     Board getBoard(Long id);
 
-    Board insertBoard(Board board);
-
-    void deleteBoard(Board board);
-
 }
+

@@ -1,6 +1,5 @@
 package com.anyang.study.board.interfaces.controller;
 
-import com.anyang.study.board.application.BoardService;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.interfaces.dto.BoardDto;
 import org.junit.Before;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
