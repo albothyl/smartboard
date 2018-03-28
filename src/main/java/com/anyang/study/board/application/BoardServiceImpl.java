@@ -2,12 +2,15 @@ package com.anyang.study.board.application;
 
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.domain.BoardRepository;
+import com.anyang.study.board.interfaces.dto.BoardDto;
 import com.anyang.study.board.interfaces.exception.NullBoardException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -16,22 +19,20 @@ import java.util.Optional;
 @Service("BoardService")
 public class BoardServiceImpl implements BoardService {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     @Override
-    public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
-        List<Board> arrayList;
+    public ArrayList<BoardDto> getBoardList() {
+        CommonUtil commonUtil = new CommonUtil();
 
-       if(sort == null) {
-           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll();
-            else arrayList = boardRepository.findAllByTitle(searchkeyword);
-        }
-        else {
-           if(searchkeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
-           else  arrayList = boardRepository.findAllByTitleSort(searchkeyword, sort.toString());
-        }
-        return arrayList;
+        List<Board> boardVoList = boardRepository.findAll();
+
+        ArrayList<BoardDto> boardDtoList = new ArrayList<>();
+        boardDtoList = commonUtil.voToDto(boardVoList);
+
+        return boardDtoList;
     }
+
 
     @Override
     public Board getBoard(long id) throws NullBoardException {

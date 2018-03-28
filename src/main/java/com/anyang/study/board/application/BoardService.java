@@ -1,13 +1,15 @@
 package com.anyang.study.board.application;
 
 import com.anyang.study.board.domain.Board;
+import com.anyang.study.board.interfaces.dto.BoardDto;
 import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface BoardService {
-    //게시판 목록을 가져온다.
-   List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword);
+
+    ArrayList<BoardDto> getBoardList();
 
     //게시판 정보를 데이터베이스에서 읽어와 화면에 출력한다.
     Board getBoard(long id);
@@ -17,5 +19,4 @@ public interface BoardService {
 
     //선택한 게시판 정보를 삭제한다.
     void deleteBoard(Board board);
-
 }
