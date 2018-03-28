@@ -29,35 +29,34 @@ public class BoardController {
     //목록 가져오기 - 정렬, 키워드 검색
     @RequestMapping(value = "/board/boardList/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
     public ModelAndView boardList(@PathVariable(value = "sortType") String sort,
-                                  @PathVariable(value = "searchType") String searchtype,
-                                  @PathVariable(value = "searchKeyword") String searchkeyword) {
+                                  @PathVariable(value = "searchType") String searchType,
+                                  @PathVariable(value = "searchKeyword") String searchKeyword) {
         ModelAndView mav = new ModelAndView("boardList");
-        //List<Board> gotBoardList = boardService.getBoardAll(new Sort("writer"));
-        if(sort.isEmpty()) {
+        if (sort.isEmpty()) {
             sort = "id";
         }
-        List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchtype, searchkeyword);
+        List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchType, searchKeyword);
 
-        ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
+        List<BoardDto> gotBoardDtoList = new ArrayList<>();
 
-        for (int i = 0; i < gotBoardList.size(); i++) {
-            Board board = gotBoardList.get(i);
-            BoardDto dto = new BoardDto();
-            dto.setId(board.getId());
-            dto.setTitle(board.getTitle());
-            dto.setContent(board.getContent());
-            dto.setWriter(board.getWriter());
-            dto.setCreatedAt(board.getCreatedAt());
-            dto.setCreatedAt2(LocalDate.from(board.getCreatedAt()));
-
-            dto.setModifiedAt(board.getModifiedAt());
-            gotBoardDtoList.add(dto);
+        for (Board board : gotBoardList) {
+            BoardDto gotBoardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .modifiedAt(board.getModifiedAt())
+                    .createdAt(board.getCreatedAt())
+                    .createdAt2(LocalDate.from(board.getCreatedAt()))
+                    .build();
+            gotBoardDtoList.add(gotBoardDto);
         }
+
         mav.addObject("list", gotBoardDtoList);
 
         mav.addObject("sorttype", sort);
-        mav.addObject("strsearchtype", searchtype);
-        mav.addObject("searchkeyword", searchkeyword);
+        mav.addObject("strsearchtype", searchType);
+        mav.addObject("searchkeyword", searchKeyword);
 
         return mav;
     }
@@ -66,21 +65,20 @@ public class BoardController {
     @RequestMapping(value = "/board/boardList")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = boardService.getBoardAll(null,"","");
+        List<Board> gotBoardList = boardService.getBoardAll(null, "", "");
+        List<BoardDto> gotBoardDtoList = new ArrayList<>();
 
-        ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
-        for (int i = 0; i < gotBoardList.size(); i++) {
-            Board board = gotBoardList.get(i);
-            BoardDto dto = new BoardDto();
-            dto.setId(board.getId());
-            dto.setTitle(board.getTitle());
-            dto.setContent(board.getContent());
-            dto.setWriter(board.getWriter());
-            dto.setCreatedAt(board.getCreatedAt());
-            dto.setCreatedAt2(LocalDate.from(board.getCreatedAt()));
-
-            dto.setModifiedAt(board.getModifiedAt());
-            gotBoardDtoList.add(dto);
+        for (Board board : gotBoardList) {
+            BoardDto gotBoardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter())
+                    .modifiedAt(board.getModifiedAt())
+                    .createdAt(board.getCreatedAt())
+                    .createdAt2(LocalDate.from(board.getCreatedAt()))
+                    .build();
+            gotBoardDtoList.add(gotBoardDto);
         }
         mav.addObject("list", gotBoardDtoList);
 
@@ -138,10 +136,10 @@ public class BoardController {
     }
 
     @RequestMapping(value = "/board/boardDelete/{id}", method = POST)
-    public String delete(@PathVariable(value = "id") long bid, RedirectAttributes rttr) {
+    public String delete(@PathVariable(value = "id") long bid, RedirectAttributes attributes) {
         boardService.deleteBoard(boardService.getBoard(bid));
 
-        rttr.addFlashAttribute("msg", "success");
+        attributes.addFlashAttribute("msg", "success");
         return "redirect:/board/boardList";
     }
 

@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service("BoardService")
 public class BoardServiceImpl implements BoardService {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     @Override
     public List<Board> getBoardAll(Sort sort, String searchtype, String searchkeyword) {
