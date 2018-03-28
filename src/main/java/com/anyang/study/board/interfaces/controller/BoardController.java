@@ -7,6 +7,7 @@ import com.anyang.study.board.interfaces.dto.BoardDto;
 import com.anyang.study.board.interfaces.util.DomainManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +30,12 @@ public class BoardController {
 
     //리스트 보여주기
     @RequestMapping(value = "/boards", method = GET)
-    public ModelAndView list() {
+    public ModelAndView list(@RequestParam(value = "sortType", required = false, defaultValue = Sort.DEFAULT_DIRECTION) Sort sortType,
+                             @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+                             @RequestParam(value = "searchKeyword", required = false, defaultValue = "") String searchKeyword
+    ) {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = getService.getBoardAll(null, "", "");
+        List<Board> gotBoardList = getService.getBoardAll(sortType, searchType, searchKeyword);
 
         ArrayList<BoardDto> boardDtoList = new ArrayList<>();
 

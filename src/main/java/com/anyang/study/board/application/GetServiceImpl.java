@@ -21,11 +21,17 @@ public class GetServiceImpl implements GetService {
         List<Board> arrayList;
 
         if (sort == null) {
-            if (searchKeyword.isEmpty()) arrayList = boardRepository.findAll();
-            else arrayList = boardRepository.findAllByTitle(searchKeyword);
+            if (searchKeyword.isEmpty()) {
+                arrayList = boardRepository.findAll();
+            } else {
+                arrayList = boardRepository.findAllByTitle(searchKeyword);
+            }
         } else {
-            if (searchKeyword.isEmpty()) arrayList = boardRepository.findAll(sort);
-            else arrayList = boardRepository.findAllByTitleSort(searchKeyword, sort.toString());
+            if (searchKeyword.isEmpty()) {
+                arrayList = boardRepository.findAll(sort);
+            } else {
+                arrayList = boardRepository.findAllByTitleSort(searchKeyword, sort.toString());
+            }
         }
         return arrayList;
     }
