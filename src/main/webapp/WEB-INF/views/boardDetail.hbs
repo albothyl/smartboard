@@ -1,45 +1,20 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+</script>
+
 <html>
 <head>
     <title>게시글 상세</title>
 </head>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        var content = "{{board.content}}";
-        $('#content').append(content);
-    });
-
-    function clickList() {
-        self.location.replace('/board');
-    }
-
-    function delchk() {
-        if (confirm("삭제하시겠습니까?")) {
-            $.ajax({
-                url: "/boards/{{board.id}}",
-                type: "delete",
-                complete: function () {
-                    self.location.replace('/board');
-                }
-            })
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script>
 <body>
 <div class="main_container">
-    <h1>게시판 상세</h1>
     <h1>게시판 상세</h1>
     <table>
         <tr>
             <th>제목</th>
             <td colspan="3">{{board.title}}</td>
-            <th>조회수</th>
-            <td>{{board.viewCnt}}</td>
         </tr>
         <tr>
             <th>작성자</th>
@@ -50,16 +25,21 @@
             <td>{{board.modifiedAt}}</td>
         </tr>
         <td colspan="6">
-            <div id="content"></div>
+            {{board.content}}
         </td>
         <tr>
     </table>
     <div class="btns">
-        <button onclick="clickList();">목록</button>
-        <form method="post" action="/board/{{board.id}}/editForm" class="modify_btn">
+        <form method="get" action="/boards" class="list_btn">
+            <input type="submit" value="목록">
+        </form>
+        <form method="get" action="/boards/{{board.id}}/editForm" class="modify_btn">
             <input type="submit" value="수정">
         </form>
-        <button class="delete_btn" onclick="delchk();">삭제</button>
+        <form method="post" action="/boards/{{board.id}}" class="delete_btn">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="삭제">
+        </form>
     </div>
 </div>
 </body>

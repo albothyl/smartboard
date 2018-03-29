@@ -6,8 +6,19 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findAllByTitle(String searchKeyword);
+    List<Board> findAllByOrderByIdDesc();
 
-    List<Board> findAllByTitleSort(String searchKeyword, String sort);
+    List<Board> findAllByOrderByIdAsc();
 
+    List<Board> findByTitleLikeOrderByIdDesc(String searchKeyword);
+
+    List<Board> findByContentLikeOrderByIdDesc(String searchKeyword);
+
+    List<Board> findByWriterLikeOrderByIdDesc(String searchKeyword);
+
+    List<Board> findByTitleLikeOrderByIdAsc(String searchKeyword);
+
+    List<Board> findByContentLikeOrderByIdAsc(String searchKeyword);
+
+    List<Board> findByWriterLikeOrderByIdAsc(String searchKeyword);
 }

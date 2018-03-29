@@ -4,6 +4,7 @@ import org.apache.commons.lang3.CharEncoding;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.ServletContext;
@@ -23,6 +24,10 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         characterEncodingFilter.setEncoding(CharEncoding.UTF_8);
         javax.servlet.FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encodingFilter", characterEncodingFilter);
         encodingFilter.addMappingForUrlPatterns(null, true, "/*");
+
+        HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
+        javax.servlet.FilterRegistration.Dynamic httpMethodFilter = servletContext.addFilter("httpFilter", hiddenHttpMethodFilter);
+        httpMethodFilter.addMappingForUrlPatterns(null, true, "/*");
 
     }
 }

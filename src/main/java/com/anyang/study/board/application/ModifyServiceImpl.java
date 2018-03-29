@@ -5,10 +5,10 @@ import com.anyang.study.board.domain.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("ModifyService")
 public class ModifyServiceImpl implements ModifyService {
     @Autowired
-    BoardRepository boardRepository;
+    private BoardRepository boardRepository;
 
     @Override
     public Board insertBoard(Board board) {

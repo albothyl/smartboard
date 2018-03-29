@@ -7,7 +7,6 @@ import com.anyang.study.board.interfaces.dto.BoardDto;
 import com.anyang.study.board.interfaces.util.DomainManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,7 @@ public class BoardController {
 
     //리스트 보여주기
     @RequestMapping(value = "/boards", method = GET)
-    public ModelAndView list(@RequestParam(value = "sortType", required = false, defaultValue = Sort.DEFAULT_DIRECTION) Sort sortType,
+    public ModelAndView list(@RequestParam(value = "sortType", required = false, defaultValue = "desc") String sortType,
                              @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                              @RequestParam(value = "searchKeyword", required = false, defaultValue = "") String searchKeyword
     ) {
@@ -64,12 +63,12 @@ public class BoardController {
 
         Board createdBoard = modifyService.insertBoard(willCreateBoard);
         Long createdId = createdBoard.getId();
-        return "redirect:/board/" + createdId;
+        return "redirect:/boards/" + createdId;
     }
 
     //기존글 수정양식
     @RequestMapping(value = "/boards/{id}/editForm", method = GET)
-    public ModelAndView modifyForm(@RequestParam(value = "id") Long boardId) {
+    public ModelAndView modifyForm(@PathVariable(value = "id") Long boardId) {
         Board gotBoard = getService.getBoard(boardId);
 
         BoardDto boardDto = DomainManager.domainToDto(gotBoard, "yyyy-MM-dd hh:mm:ss");
@@ -82,15 +81,15 @@ public class BoardController {
     @RequestMapping(value = "/boards/{id}", method = PATCH)
     public String modify(@PathVariable(value = "id") Long boardId,
                          BoardDto boardDto) {
-        Board willUpdateBoard = getService.getBoard(boardId);
-
-        willUpdateBoard.setTitle(boardDto.getTitle());
-        willUpdateBoard.setContent(boardDto.getContent());
-        willUpdateBoard.setWriter(boardDto.getWriter());
+        Board baseBoard = getService.getBoard(boardId);
+        Board willUpdateBoard = DomainManager.dtoToDomain(boardDto);
+        willUpdateBoard.setId(baseBoard.getId());
+        willUpdateBoard.setCreatedAt(baseBoard.getCreatedAt());
+        willUpdateBoard.setModifiedAt(baseBoard.getModifiedAt());
 
         Board modifiedBoard = modifyService.insertBoard(willUpdateBoard);
         Long modifiedId = modifiedBoard.getId();
-        return "redirect:/board/" + modifiedId;
+        return "redirect:/boards/" + modifiedId;
     }
 
     //게시글보기
@@ -111,41 +110,5 @@ public class BoardController {
 
         return "redirect:/boards";
     }
-
-
-/*    @RequestMapping(value = "/board/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
-    public ModelAndView boardSortList(@PathVariable(value = "sortType") String sort,
-                                      @PathVariable(value = "searchType") String searchType,
-                                      @PathVariable(value = "searchKeyword") String searchKeyword) {
-        ModelAndView mav = new ModelAndView("boardList");
-        if (sort.isEmpty()) {
-            sort = "id";
-        }
-        List<Board> gotBoardList = boardService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchType, searchKeyword);
-
-        ArrayList<BoardDto> gotBoardDtoList = new ArrayList<>();
-
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-
-        for (int i = 0; i < gotBoardList.size(); i++) {
-            Board board = gotBoardList.get(i);
-            BoardDto boardDto = BoardDto.builder()
-                    .id(board.getId())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .writer(board.getWriter())
-                    .createdAt(board.getCreatedAt().format(dateTimeFormatter))
-                    .modifiedAt(board.getModifiedAt().format(dateTimeFormatter))
-                    .build();
-            gotBoardDtoList.add(boardDto);
-        }
-        mav.addObject("list", gotBoardDtoList);
-
-        mav.addObject("sorttype", sort);
-        mav.addObject("strsearchtype", searchType);
-        mav.addObject("searchkeyword", searchKeyword);
-
-        return mav;
-    }*/
 
 }

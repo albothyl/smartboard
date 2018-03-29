@@ -25,11 +25,11 @@
             </div>
             <div>
                 <span><button><a href="/boards/{{board.id}}">취소</a></button></span>
+                <input type="hidden" name="_method" value="patch">
                 <span><input type="submit" value="작성"></span><!-- boards/{id}에 PATCH로 -->
             </div>
         </form>
-
-
+        
     {{else}}
         <form method="post" action="/boards">
             <h1>게시판 등록화면</h1>
