@@ -10,12 +10,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -94,18 +97,17 @@ public class BoardController {
 
     //게시글등록 후 상세페이지로
     @RequestMapping(value = "/board/boardUpdate", method = POST)
-    public String update(BoardDto board) {
-        Board willUpdateBoard;
-        if (board.getId() == null) {
-            willUpdateBoard = new Board();
-        } else {
-            willUpdateBoard = boardService.getBoard(board.getId());
-        }
-        willUpdateBoard.setTitle(board.getTitle());
-        willUpdateBoard.setContent(board.getContent());
-        willUpdateBoard.setWriter(board.getWriter());
+    public String update(@RequestParam Map<String, String> param) {
+        Board updateBoard = boardService.getBoard(Long.parseLong(param.get("id")));
 
-        Board updatedBoard = boardService.insertBoard(willUpdateBoard);
+        updateBoard.setId(Long.parseLong(param.get("id")));
+        updateBoard.setTitle(param.get("title"));
+        updateBoard.setContent(param.get("content"));
+        updateBoard.setWriter(param.get("writer"));
+        updateBoard.setCreatedAt(updateBoard.getCreatedAt());
+        updateBoard.setModifiedAt(LocalDateTime.now());
+
+        Board updatedBoard = boardService.insertBoard(updateBoard);
         long updatedId = updatedBoard.getId();
         return "redirect:/board/boardDetail/" + updatedId;
     }
