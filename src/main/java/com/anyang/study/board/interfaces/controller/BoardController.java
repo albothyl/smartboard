@@ -46,9 +46,9 @@ public class BoardController {
 
         mav.addObject("list", boardDtoList);
 
-        mav.addObject("sorttype", sort);
-        mav.addObject("strsearchtype", searchType);
-        mav.addObject("searchkeyword", searchKeyword);
+        mav.addObject("sortType", sort);
+        mav.addObject("searchType", searchType);
+        mav.addObject("searchKeyword", searchKeyword);
 
         return mav;
     }
@@ -94,10 +94,17 @@ public class BoardController {
         }
     }
 
+    //새글작성
+    @RequestMapping(value = "/board/boardUpdate")
+    public ModelAndView create() {
+        ModelAndView mav = new ModelAndView("boardUpdate");
+
+        return mav;
+    }
 
     @RequestMapping(value = "/board/boardUpdate", method = POST)
     public String update(@RequestParam Map<String, String> param) {
-        Board board = domainManager.getBoard(param);
+        Board board = domainManager.getBoard(param, findService);
 
         Board updatedBoard = transactionService.insertBoard(board);
         Long updatedId = updatedBoard.getId();
