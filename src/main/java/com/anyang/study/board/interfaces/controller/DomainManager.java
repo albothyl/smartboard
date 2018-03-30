@@ -10,13 +10,16 @@ import java.util.Map;
 import java.util.Optional;
 
 public class DomainManager {
+    private DomainManager() {
+    }
+
     @Autowired
-    FindService findService;
+    private FindService findService;
 
     private static DomainManager instance;
 
     public static DomainManager getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new DomainManager();
         }
         return instance;

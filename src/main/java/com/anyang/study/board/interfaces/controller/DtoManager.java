@@ -14,12 +14,11 @@ public class DtoManager {
     private static DtoManager instance;
 
     public static DtoManager getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new DtoManager();
         }
         return instance;
     }
-
 
     List<BoardDto> getBoardDtos(List<Board> gotBoardList) {
         List<BoardDto> gotBoardDtoList = new ArrayList<BoardDto>();
