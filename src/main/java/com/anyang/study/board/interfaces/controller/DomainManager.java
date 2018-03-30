@@ -2,7 +2,6 @@ package com.anyang.study.board.interfaces.controller;
 
 import com.anyang.study.board.application.FindService;
 import com.anyang.study.board.domain.Board;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
@@ -13,9 +12,6 @@ public class DomainManager {
     private DomainManager() {
     }
 
-    @Autowired
-    private FindService findService;
-
     private static DomainManager instance;
 
     public static DomainManager getInstance() {
@@ -25,7 +21,7 @@ public class DomainManager {
         return instance;
     }
 
-    Board getBoard(@RequestParam Map<String, String> param) {
+    Board getBoard(@RequestParam Map<String, String> param, FindService findService) {
         Optional<String> updateId = Optional.ofNullable(param.get("id"));
         Board board = null;
         if (updateId.isPresent()) {
