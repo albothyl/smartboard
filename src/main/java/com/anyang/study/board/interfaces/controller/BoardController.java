@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Slf4j
 @Controller
@@ -32,7 +32,7 @@ public class BoardController {
     TransactionService transactionService;
 
     //목록 가져오기 - 정렬, 키워드 검색
-    @RequestMapping(value = "/board/boardList/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}")
+    @RequestMapping(value = "/board/boardList/sortType={sortType}&searchType={searchType}&searchKeyword={searchKeyword}", method = GET)
     public ModelAndView boardList(@PathVariable(value = "sortType") String sort,
                                   @PathVariable(value = "searchType") String searchType,
                                   @PathVariable(value = "searchKeyword") String searchKeyword) {
@@ -55,7 +55,7 @@ public class BoardController {
 
 
     //목록 가져오기
-    @RequestMapping(value = "/board/boardList")
+    @RequestMapping(value = "/board/boardList", method = GET)
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
         List<Board> boardList = findService.getBoardAll(null, "", "");
@@ -95,14 +95,14 @@ public class BoardController {
     }
 
     //새글작성
-    @RequestMapping(value = "/board/boardUpdate")
-    public ModelAndView create() {
+    @RequestMapping(value = "/board/boardUpdate", method = GET)
+    public ModelAndView createForm() {
         ModelAndView mav = new ModelAndView("boardUpdate");
 
         return mav;
     }
 
-    @RequestMapping(value = "/board/boardUpdate", method = POST)
+    @RequestMapping(value = "/board/boardUpdate")
     public String update(@RequestParam Map<String, String> param) {
         Board board = domainManager.getBoard(param, findService);
 
