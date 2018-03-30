@@ -8,8 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DtoManager {
-    public DtoManager() {
+    private DtoManager() {
     }
+
+    private static DtoManager instance;
+
+    public static DtoManager getInstance() {
+        if(instance == null) {
+            instance = new DtoManager();
+        }
+        return instance;
+    }
+
 
     List<BoardDto> getBoardDtos(List<Board> gotBoardList) {
         List<BoardDto> gotBoardDtoList = new ArrayList<BoardDto>();
@@ -27,5 +37,15 @@ public class DtoManager {
             gotBoardDtoList.add(gotBoardDto);
         }
         return gotBoardDtoList;
+    }
+
+    BoardDto getBoardDto(Board gotBoard) {
+        return BoardDto.builder()
+                .id(gotBoard.getId())
+                .title(gotBoard.getTitle())
+                .content(gotBoard.getContent())
+                .writer(gotBoard.getWriter())
+                .modifiedAt(gotBoard.getModifiedAt())
+                .createdAt(gotBoard.getCreatedAt()).build();
     }
 }

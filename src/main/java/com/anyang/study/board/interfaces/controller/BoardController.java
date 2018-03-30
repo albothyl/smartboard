@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -26,7 +24,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 public class BoardController {
 
-    private final DtoManager dtoManager = new DtoManager();
+    private DomainManager domainManager = DomainManager.getInstance();
+    private DtoManager dtoManager = DtoManager.getInstance();
     @Autowired
     FindService findService;
     @Autowired
@@ -41,11 +40,11 @@ public class BoardController {
         if (sort.isEmpty()) {
             sort = "id";
         }
-        List<Board> gotBoardList = findService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchType, searchKeyword);
+        List<Board> boardList = findService.getBoardAll(new Sort(Sort.Direction.DESC, sort), searchType, searchKeyword);
 
-        List<BoardDto> gotBoardDtoList = dtoManager.getBoardDtos(gotBoardList);
+        List<BoardDto> boardDtoList = dtoManager.getBoardDtos(boardList);
 
-        mav.addObject("list", gotBoardDtoList);
+        mav.addObject("list", boardDtoList);
 
         mav.addObject("sorttype", sort);
         mav.addObject("strsearchtype", searchType);
@@ -59,38 +58,35 @@ public class BoardController {
     @RequestMapping(value = "/board/boardList")
     public ModelAndView boardList() {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = findService.getBoardAll(null, "", "");
-        List<BoardDto> gotBoardDtoList = dtoManager.getBoardDtos(gotBoardList);
-        mav.addObject("list", gotBoardDtoList);
+        List<Board> boardList = findService.getBoardAll(null, "", "");
+        List<BoardDto> boardDtoList = dtoManager.getBoardDtos(boardList);
+        mav.addObject("list", boardDtoList);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/board/boardDetail/{id}")
+    public ModelAndView boardDetail(@PathVariable(value = "id") Long boardId) {
+        ModelAndView mav = new ModelAndView("boardDetail");
+
+        Board board = findService.getBoard(boardId);
+        BoardDto gotBoardDto = dtoManager.getBoardDto(board);
+
+        mav.addObject("board", gotBoardDto);
 
         return mav;
     }
 
 
-    //새글작성
-    @RequestMapping(value = "/board/boardUpdate")
-    public ModelAndView create() {
-        ModelAndView mav = new ModelAndView("boardUpdate");
-
-        return mav;
-    }
-
-    //이전글 수정
     @RequestMapping(value = "/board/boardUpdate/{id}")
     public ModelAndView modify(@PathVariable(value = "id") Long boardId) {
         ModelAndView mav = null;
         try {
-            Board gotBoard = findService.getBoard(boardId);
+            Board board = findService.getBoard(boardId);
 
-            BoardDto gotBoardDto = BoardDto.builder()
-                    .id(gotBoard.getId())
-                    .title(gotBoard.getTitle())
-                    .content(gotBoard.getContent())
-                    .writer(gotBoard.getWriter())
-                    .modifiedAt(gotBoard.getModifiedAt())
-                    .createdAt(gotBoard.getCreatedAt()).build();
+            BoardDto boardDto = dtoManager.getBoardDto(board);
             mav = new ModelAndView("boardUpdate");
-            mav.addObject("board", gotBoardDto);
+            mav.addObject("board", boardDto);
         } catch (NullBoardException e) {
             mav = new ModelAndView("nullBoard");
         } finally {
@@ -98,43 +94,24 @@ public class BoardController {
         }
     }
 
-    //게시글등록 후 상세페이지로
+
     @RequestMapping(value = "/board/boardUpdate", method = POST)
     public String update(@RequestParam Map<String, String> param) {
-        Optional<String> updateId = Optional.ofNullable(param.get("id"));
-        Board updateBoard = findService.getBoard(Long.parseLong(String.valueOf(updateId)));
+        Board board = domainManager.getBoard(param);
 
-        updateBoard.setId(Long.parseLong(param.get("id")));
-        updateBoard.setTitle(param.get("title"));
-        updateBoard.setContent(param.get("content"));
-        updateBoard.setWriter(param.get("writer"));
-        updateBoard.setCreatedAt(updateBoard.getCreatedAt());
-        updateBoard.setModifiedAt(LocalDateTime.now());
-
-        Board updatedBoard = transactionService.insertBoard(updateBoard);
-        long updatedId = updatedBoard.getId();
+        Board updatedBoard = transactionService.insertBoard(board);
+        Long updatedId = updatedBoard.getId();
         return "redirect:/board/boardDetail/" + updatedId;
     }
 
-    @RequestMapping(value = "/board/boardDelete/{id}", method = POST)
-    public String delete(@PathVariable(value = "id") Long boardId, RedirectAttributes attributes) {
+
+    @RequestMapping(value = "/board/boardDelete/{id}")
+    public String delete(@PathVariable(value = "id") Long boardId, RedirectAttributes returnMessage) {
         transactionService.deleteBoard(boardId);
 
-        attributes.addFlashAttribute("msg", "success");
+        returnMessage.addFlashAttribute("msg", "success");
         return "redirect:/board/boardList";
     }
 
-
-    @RequestMapping(value = "/board/boardDetail/{id}")
-    public ModelAndView boardDetail(@PathVariable(value = "id") long bid) {
-        ModelAndView mav = new ModelAndView("boardDetail");
-
-        Board board = findService.getBoard(bid);
-
-        board.setContent(board.getContent());
-        mav.addObject("board", board);
-
-        return mav;
-    }
 
 }
