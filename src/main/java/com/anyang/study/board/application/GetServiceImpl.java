@@ -41,21 +41,21 @@ public class GetServiceImpl implements GetService {
          */
         if (Objects.equals(sort, "desc")) {
             if (Objects.equals(searchType, "title")) {
-                arrayList = boardRepository.findByTitleLikeOrderByIdDesc(searchKeyword);
+                arrayList = boardRepository.findByTitleLikeOrderByIdDesc("%" + searchKeyword + "%");
             } else if (Objects.equals(searchType, "content")) {
-                arrayList = boardRepository.findByContentLikeOrderByIdDesc(searchKeyword);
+                arrayList = boardRepository.findByContentLikeOrderByIdDesc("%" + searchKeyword + "%");
             } else if (Objects.equals(searchType, "writer")) {
-                arrayList = boardRepository.findByWriterLikeOrderByIdDesc(searchKeyword);
+                arrayList = boardRepository.findByWriterLikeOrderByIdDesc("%" + searchKeyword + "%");
             } else {
                 arrayList = boardRepository.findAllByOrderByIdDesc();
             }
         } else {
             if (Objects.equals(searchType, "title")) {
-                arrayList = boardRepository.findByTitleLikeOrderByIdAsc(searchKeyword);
+                arrayList = boardRepository.findByTitleLikeOrderByIdAsc("%" + searchKeyword + "%");
             } else if (Objects.equals(searchType, "content")) {
-                arrayList = boardRepository.findByContentLikeOrderByIdAsc(searchKeyword);
+                arrayList = boardRepository.findByContentLikeOrderByIdAsc("%" + searchKeyword + "%");
             } else if (Objects.equals(searchType, "writer")) {
-                arrayList = boardRepository.findByWriterLikeOrderByIdAsc(searchKeyword);
+                arrayList = boardRepository.findByWriterLikeOrderByIdAsc("%" + searchKeyword + "%");
             } else {
                 arrayList = boardRepository.findAllByOrderByIdAsc();
             }
