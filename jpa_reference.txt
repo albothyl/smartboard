@@ -1,0 +1,24 @@
+3. 스프링 데이터 저장소 작업
+3-1. 핵심개념
+CrudRepository에 의해 엔티티 클래스에 대한 정교한 CRUD기능 제공
+	Optional<T> findById(ID primaryKey);
+페이징을 쉽게 하기 위한 PagingAndSortingRepository도 있음
+	PagingAndSortingRepository<User, Long> repository = // … get access to a bean
+	Page<User> users = repository.findAll(new PageRequest(1, 20));
+쿼리 메서드 외에도 개수 및 삭제 쿼리에 대한 쿼리 파생을 사용할 수 있습니다.
+3-2. 검색어방법
+	1. 인터페이스 선언
+	2. 인터페이스 내부에 쿼리메소드 선언
+	3. 프록시 인스턴스를 작성하기 위해 Spring을 설정(@EnableRepository)
+	4. Repository 인터페이스 주입 후 사용
+3-3. 저장소 인터페이스 정의
+@NoRepositoryBean. Spring Data가 런타임에 인스턴스를 생성해서는 안되는 모든 저장소 인터페이스에 해당 주석을 추가해야합니다.
+Null 가능성 주석 : @NonNullApi, @NonNull, @Nullable
+저장소를 구별하는 마지막 방법은 저장소 기본 패키지의 범위를 지정하는 것입니다. 
+@EnableJpaRepositories(basePackages = "com.acme.repositories.jpa")
+@EnableMongoRepositories(basePackages = "com.acme.repositories.mongo")
+interface Configuration { }
+3-4. 쿼리 메서드 정의
+레파지토리 프록시에는 메소드 이름으로 저장소에 맞는 쿼리를 만들어내는 두가지 방법이 있음. 
+1. 메소드 이름으로 직접적으로 쿼리만들기
+2. 수동적으로 정의된 쿼리를 사용
