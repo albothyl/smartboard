@@ -24,20 +24,23 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     private static final int TOTAL_COUNT = 10;
-
+    private static boolean isInitialized = false;
     //초기 설정 디비 전체 삭제후 10건 추가
     @Before
     public void setup() {
-        boardRepository.deleteAll();
-        boardRepository.flush();
-
-        for (int i = 0; i < TOTAL_COUNT; i++) {
-            Board board = new Board();
-            board.setTitle("insert test " + i);
-            board.setContent("insert content " + i);
-            board.setWriter("insert writer " + i);
-            boardRepository.save(board);
+        if(!isInitialized) {
+            boardRepository.deleteAll();
+            boardRepository.flush();
+            for (int i = 0; i < TOTAL_COUNT; i++) {
+                Board board = new Board();
+                boardRepository.save(board.builder()
+                        .title("title " + i)
+                        .content("content " + i)
+                        .writer("writer " + i)
+                        .build());
+            }
         }
+        isInitialized = true;
     }
 
     //전체 리스트 조회
@@ -74,6 +77,6 @@ public class BoardRepositoryTest {
             afterId = board.getId();
         }
 
-        assertThat(afterId+1L, is(beforeId));
+        assertThat(afterId + 1L, is(beforeId));
     }
 }
