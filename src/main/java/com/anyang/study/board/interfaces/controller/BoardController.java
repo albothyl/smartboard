@@ -77,7 +77,7 @@ public class BoardController {
 
         BoardDto boardDto = DomainHelper.domainToDto(gotBoard, DATE_TIME_PATTERN);
         ModelAndView mav = new ModelAndView("boardForm");
-        mav.addObject("board", boardDto);
+        mav.addObject("boardDto", boardDto);
         return mav;
     }
 

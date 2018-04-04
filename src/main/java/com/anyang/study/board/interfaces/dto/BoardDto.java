@@ -4,6 +4,7 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class BoardDto {
     private Long id;

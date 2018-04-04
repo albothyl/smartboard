@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
