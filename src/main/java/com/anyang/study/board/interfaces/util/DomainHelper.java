@@ -5,7 +5,7 @@ import com.anyang.study.board.interfaces.dto.BoardDto;
 
 import java.time.format.DateTimeFormatter;
 
-public class DomainManager {
+public class DomainHelper {
 
     public static BoardDto domainToDto(Board board, String pattern) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);

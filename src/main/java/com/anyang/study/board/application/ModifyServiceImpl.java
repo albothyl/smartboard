@@ -4,8 +4,10 @@ import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.domain.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service("ModifyService")
+@Service
+@Transactional
 public class ModifyServiceImpl implements ModifyService {
     @Autowired
     private BoardRepository boardRepository;

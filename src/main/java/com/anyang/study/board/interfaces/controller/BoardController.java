@@ -4,7 +4,7 @@ import com.anyang.study.board.application.GetService;
 import com.anyang.study.board.application.ModifyService;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.interfaces.dto.BoardDto;
-import com.anyang.study.board.interfaces.util.DomainManager;
+import com.anyang.study.board.interfaces.util.DomainHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +27,10 @@ public class BoardController {
     @Autowired
     private ModifyService modifyService;
 
+    private static final String REDIRECT_BOARDS = "redirect:/boards/";
+    private static final String DATE_PATTERN = "yyyy.mm.dd";
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd hh:mm:ss";
+
     //리스트 보여주기
     @RequestMapping(value = "/boards", method = GET)
     public ModelAndView list(@RequestParam(value = "sortType", required = false, defaultValue = "desc") String sortType,
@@ -40,7 +44,7 @@ public class BoardController {
 
         for (int i = 0; i < gotBoardList.size(); i++) {
             Board board = gotBoardList.get(i);
-            BoardDto boardDto = DomainManager.domainToDto(board, "yyyy.MM.dd");
+            BoardDto boardDto = DomainHelper.domainToDto(board, DATE_PATTERN);
             boardDtoList.add(boardDto);
         }
         mav.addObject("list", boardDtoList);
@@ -59,11 +63,11 @@ public class BoardController {
     @RequestMapping(value = "/boards", method = POST)
     public String create(BoardDto boardDto) {
 
-        Board willCreateBoard = DomainManager.dtoToDomain(boardDto);
+        Board willCreateBoard = DomainHelper.dtoToDomain(boardDto);
 
         Board createdBoard = modifyService.insertBoard(willCreateBoard);
         Long createdId = createdBoard.getId();
-        return "redirect:/boards/" + createdId;
+        return REDIRECT_BOARDS + createdId;
     }
 
     //기존글 수정양식
@@ -71,7 +75,7 @@ public class BoardController {
     public ModelAndView modifyForm(@PathVariable(value = "id") Long boardId) {
         Board gotBoard = getService.getBoard(boardId);
 
-        BoardDto boardDto = DomainManager.domainToDto(gotBoard, "yyyy-MM-dd hh:mm:ss");
+        BoardDto boardDto = DomainHelper.domainToDto(gotBoard, DATE_TIME_PATTERN);
         ModelAndView mav = new ModelAndView("boardForm");
         mav.addObject("board", boardDto);
         return mav;
@@ -82,14 +86,12 @@ public class BoardController {
     public String modify(@PathVariable(value = "id") Long boardId,
                          BoardDto boardDto) {
         Board baseBoard = getService.getBoard(boardId);
-        Board willUpdateBoard = DomainManager.dtoToDomain(boardDto);
-        willUpdateBoard.setId(baseBoard.getId());
-        willUpdateBoard.setCreatedAt(baseBoard.getCreatedAt());
-        willUpdateBoard.setModifiedAt(baseBoard.getModifiedAt());
+        Board willUpdateBoard = DomainHelper.dtoToDomain(boardDto);
+        willUpdateBoard.setBoard(baseBoard.getId(), baseBoard.getCreatedAt(), baseBoard.getModifiedAt());
 
         Board modifiedBoard = modifyService.insertBoard(willUpdateBoard);
         Long modifiedId = modifiedBoard.getId();
-        return "redirect:/boards/" + modifiedId;
+        return REDIRECT_BOARDS + modifiedId;
     }
 
     //게시글보기
@@ -97,7 +99,7 @@ public class BoardController {
     public ModelAndView detail(@PathVariable(value = "id") Long boardId) {
 
         Board gotBoard = getService.getBoard(boardId);
-        BoardDto boardDto = DomainManager.domainToDto(gotBoard, "yyyy-MM-dd hh:mm:ss");
+        BoardDto boardDto = DomainHelper.domainToDto(gotBoard, "yyyy-MM-dd hh:mm:ss");
         ModelAndView mav = new ModelAndView("boardDetail");
         mav.addObject("board", boardDto);
         return mav;
@@ -108,7 +110,7 @@ public class BoardController {
     public String delete(@PathVariable(value = "id") Long boardId) {
         modifyService.deleteBoard(getService.getBoard(boardId));
 
-        return "redirect:/boards";
+        return REDIRECT_BOARDS;
     }
 
 }

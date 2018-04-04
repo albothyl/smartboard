@@ -10,9 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
@@ -27,5 +25,11 @@ public class Board {
     private LocalDateTime modifiedAt;
     @CreatedDate
     private LocalDateTime createdAt;
-    private int viewCnt;
+
+
+    public void setBoard(Long id, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
 }

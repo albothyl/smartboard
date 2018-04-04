@@ -5,13 +5,15 @@ import com.anyang.study.board.domain.BoardRepository;
 import com.anyang.study.board.interfaces.exception.NullBoardException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
-@Service("GetService")
+@Service
+@Transactional(readOnly = true)
 public class GetServiceImpl implements GetService {
     @Autowired
     private BoardRepository boardRepository;
