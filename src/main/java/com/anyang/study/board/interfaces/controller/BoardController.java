@@ -1,12 +1,12 @@
 package com.anyang.study.board.interfaces.controller;
 
-import com.anyang.study.board.application.GetService;
-import com.anyang.study.board.application.ModifyService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.anyang.study.board.application.FindService;
+import com.anyang.study.board.application.TransactionService;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.interfaces.dto.BoardDto;
 import com.anyang.study.board.interfaces.util.DomainHelper;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +23,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class BoardController {
 
     @Autowired
-    private GetService getService;
+    private FindService findService;
     @Autowired
-    private ModifyService modifyService;
+    private TransactionService transactionService;
 
     private static final String REDIRECT_BOARDS = "redirect:/boards/";
     private static final String DATE_PATTERN = "yyyy.mm.dd";
@@ -38,7 +38,7 @@ public class BoardController {
                              @RequestParam(value = "searchKeyword", required = false, defaultValue = "") String searchKeyword
     ) {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = getService.getBoardAll(sortType, searchType, searchKeyword);
+        List<Board> gotBoardList = findService.getBoardAll(sortType, searchType, searchKeyword);
 
         ArrayList<BoardDto> boardDtoList = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class BoardController {
 
         Board willCreateBoard = DomainHelper.dtoToDomain(boardDto);
 
-        Board createdBoard = modifyService.insertBoard(willCreateBoard);
+        Board createdBoard = transactionService.insertBoard(willCreateBoard);
         Long createdId = createdBoard.getId();
         return REDIRECT_BOARDS + createdId;
     }
@@ -73,7 +73,7 @@ public class BoardController {
     //기존글 수정양식
     @RequestMapping(value = "/boards/{id}/editForm", method = GET)
     public ModelAndView modifyForm(@PathVariable(value = "id") Long boardId) {
-        Board gotBoard = getService.getBoard(boardId);
+        Board gotBoard = findService.getBoard(boardId);
 
         BoardDto boardDto = DomainHelper.domainToDto(gotBoard, DATE_TIME_PATTERN);
         ModelAndView mav = new ModelAndView("boardForm");
@@ -85,11 +85,11 @@ public class BoardController {
     @RequestMapping(value = "/boards/{id}", method = PATCH)
     public String modify(@PathVariable(value = "id") Long boardId,
                          BoardDto boardDto) {
-        Board baseBoard = getService.getBoard(boardId);
+        Board baseBoard = findService.getBoard(boardId);
         Board willUpdateBoard = DomainHelper.dtoToDomain(boardDto);
         willUpdateBoard.setBoard(baseBoard.getId(), baseBoard.getCreatedAt(), baseBoard.getModifiedAt());
 
-        Board modifiedBoard = modifyService.insertBoard(willUpdateBoard);
+        Board modifiedBoard = transactionService.insertBoard(willUpdateBoard);
         Long modifiedId = modifiedBoard.getId();
         return REDIRECT_BOARDS + modifiedId;
     }
@@ -98,7 +98,7 @@ public class BoardController {
     @RequestMapping(value = "/boards/{id}", method = GET)
     public ModelAndView detail(@PathVariable(value = "id") Long boardId) {
 
-        Board gotBoard = getService.getBoard(boardId);
+        Board gotBoard = findService.getBoard(boardId);
         BoardDto boardDto = DomainHelper.domainToDto(gotBoard, "yyyy-MM-dd hh:mm:ss");
         ModelAndView mav = new ModelAndView("boardDetail");
         mav.addObject("board", boardDto);
@@ -108,7 +108,7 @@ public class BoardController {
     //게시글삭제
     @RequestMapping(value = "/boards/{id}", method = DELETE)
     public String delete(@PathVariable(value = "id") Long boardId) {
-        modifyService.deleteBoard(getService.getBoard(boardId));
+        transactionService.deleteBoard(findService.getBoard(boardId));
 
         return REDIRECT_BOARDS;
     }

@@ -3,8 +3,8 @@ package com.anyang.study.board.interfaces.dto;
 import lombok.*;
 
 @Getter
-@Builder
 @NoArgsConstructor
+@Builder
 public class BoardDto {
     private Long id;
     private String title;

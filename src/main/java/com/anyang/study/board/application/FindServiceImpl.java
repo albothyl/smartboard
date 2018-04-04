@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class GetServiceImpl implements GetService {
+public class FindServiceImpl implements FindService {
     @Autowired
     private BoardRepository boardRepository;
 

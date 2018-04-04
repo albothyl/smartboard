@@ -49,7 +49,11 @@ ext {
 
 //  Test ==================================
     junitVerison = '4.12'
+<<<<<<< HEAD
     mockitoVersion = '2.13.0'
+=======
+    mockitoVersion = '2.16.0'
+>>>>>>> feature/crud_sdh
 }
 
 dependencies {
@@ -76,5 +80,8 @@ dependencies {
     testCompile "junit:junit:${junitVerison}"
     testCompile "org.springframework:spring-test:${springVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/crud_sdh
 }

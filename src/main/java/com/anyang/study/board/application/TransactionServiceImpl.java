@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ModifyServiceImpl implements ModifyService {
+public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private BoardRepository boardRepository;
 
