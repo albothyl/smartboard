@@ -1,24 +1,18 @@
 package com.anyang.study.board.domain;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findAllByOrderByIdDesc();
+    List<Board> findAllBy(Pageable pageable);
 
-    List<Board> findAllByOrderByIdAsc();
+    List<Board> findByTitleLike(String searchKeyword, Pageable pageable);
 
-    List<Board> findByTitleLikeOrderByIdDesc(String searchKeyword);
+    List<Board> findByContentLike(String searchKeyword, Pageable pageable);
 
-    List<Board> findByContentLikeOrderByIdDesc(String searchKeyword);
+    List<Board> findByWriterLike(String searchKeyword, Pageable pageable);
 
-    List<Board> findByWriterLikeOrderByIdDesc(String searchKeyword);
-
-    List<Board> findByTitleLikeOrderByIdAsc(String searchKeyword);
-
-    List<Board> findByContentLikeOrderByIdAsc(String searchKeyword);
-
-    List<Board> findByWriterLikeOrderByIdAsc(String searchKeyword);
 }

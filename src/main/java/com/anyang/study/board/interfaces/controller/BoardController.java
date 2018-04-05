@@ -1,12 +1,15 @@
 package com.anyang.study.board.interfaces.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.anyang.study.board.application.FindService;
 import com.anyang.study.board.application.TransactionService;
 import com.anyang.study.board.domain.Board;
 import com.anyang.study.board.interfaces.dto.BoardDto;
 import com.anyang.study.board.interfaces.util.DomainHelper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +36,12 @@ public class BoardController {
 
     //리스트 보여주기
     @RequestMapping(value = "/boards", method = GET)
-    public ModelAndView list(@RequestParam(value = "sortType", required = false, defaultValue = "desc") String sortType,
+    public ModelAndView list(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                              @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
                              @RequestParam(value = "searchKeyword", required = false, defaultValue = "") String searchKeyword
     ) {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = findService.getBoardAll(sortType, searchType, searchKeyword);
+        List<Board> gotBoardList = findService.getPageBoard(searchType, searchKeyword, pageable);
 
         ArrayList<BoardDto> boardDtoList = new ArrayList<>();
 
