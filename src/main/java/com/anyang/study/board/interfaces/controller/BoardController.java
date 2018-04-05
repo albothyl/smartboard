@@ -41,15 +41,14 @@ public class BoardController {
                              @RequestParam(value = "searchKeyword", required = false, defaultValue = "") String searchKeyword
     ) {
         ModelAndView mav = new ModelAndView("boardList");
-        List<Board> gotBoardList = findService.getPageBoard(searchType, searchKeyword, pageable);
+        List<Board> boardList = findService.getPageBoard(searchType, searchKeyword, pageable);
 
-        ArrayList<BoardDto> boardDtoList = new ArrayList<>();
-
-        for (int i = 0; i < gotBoardList.size(); i++) {
-            Board board = gotBoardList.get(i);
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        for(Board board : boardList) {
             BoardDto boardDto = DomainHelper.domainToDto(board, DATE_PATTERN);
             boardDtoList.add(boardDto);
         }
+
         mav.addObject("list", boardDtoList);
 
         return mav;
