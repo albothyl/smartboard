@@ -31,31 +31,18 @@ public class BoardRepositoryTest {
     //초기 설정 디비 전체 삭제후 10건 추가
     @Before
     public void setup() {
-<<<<<<< HEAD:src/test/java/com/anyang/study/board/domain/repository/BoardRepositoryTest.java
-        boardRepository.deleteAll();
-        boardRepository.flush();
 
-        for (int i = 0; i < TOTAL_COUNT; i++) {
-            Board board = Board.builder()
-                    .title("insert test " + i)
-                    .content("insert content " + i)
-                    .writer("insert writer " + i)
-                    .build();
-
-            boardRepository.save(board);
-=======
         if(!isInitialized) {
             boardRepository.deleteAll();
             boardRepository.flush();
             for (int i = 0; i < TOTAL_COUNT; i++) {
-                Board board = new Board();
-                boardRepository.save(board.builder()
-                        .title("title " + i)
-                        .content("content " + i)
-                        .writer("writer " + i)
-                        .build());
+                Board board = Board.builder()
+                        .title("insert test " + i)
+                        .content("insert content " + i)
+                        .writer("insert writer " + i)
+                        .build();
+                boardRepository.save(board);
             }
->>>>>>> feature/crud_sdh:src/test/java/com/anyang/study/board/domain/BoardRepositoryTest.java
         }
         isInitialized = true;
     }
