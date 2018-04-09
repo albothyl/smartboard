@@ -2,82 +2,110 @@ group 'anyang.study'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'war'
 apply plugin: 'org.flywaydb.flyway'
+apply plugin: 'jacoco'
+apply plugin: "org.sonarqube"
 
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:5.0.7"
-    }
-}
-
-flyway {
-    url = 'jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false'
-    user = 'smartuser'
-    password = 'smartuser'
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:5.0.7"
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+	}
 }
 
 ext {
 //  Root ==================================
-    springVersion = '5.0.3.RELEASE'
-    servletVersion = '4.0.0'
-    handelbarViewResolverVersion = '4.0.6'
+	springVersion = '5.0.3.RELEASE'
+	servletVersion = '4.0.0'
+	handelbarViewResolverVersion = '4.0.6'
 
-    springDataJpaVersion = '2.0.3.RELEASE'
-    hibernateVersion = '5.2.12.Final'
-    hibernateJpaVersion = '1.0.2.Final'
-    mysqlConnectorVersion = '5.1.45'
+	springDataJpaVersion = '2.0.3.RELEASE'
+	hibernateVersion = '5.2.12.Final'
+	hibernateJpaVersion = '1.0.2.Final'
+	mysqlConnectorVersion = '5.1.45'
 
-    jacksonDatabindVersion = '2.9.5'
+	jacksonDatabindVersion = '2.9.5'
 
 //  Util ==================================
-    lombokVersion = '1.16.10'
-    guavaVersion = '19.0'
+	lombokVersion = '1.16.10'
+	guavaVersion = '19.0'
+	commonsIoVersion = '2.5'
+	jacocoVersion = '0.7.7.201606060606'
 
 //  Logging ===============================
-    slf4jVersion = '1.7.21'
-    logbackVersion = '1.1.7'
+	slf4jVersion = '1.7.21'
+	logbackVersion = '1.1.7'
 
 //  Test ==================================
-    junitVerison = '4.12'
-    mockitoVersion = '2.16.0'
+	junitVerison = '4.12'
+	mockitoVersion = '2.16.0'
+	spockVersion = '0.7-groovy-2.0'
+	randomBeansVersion = "3.4.0"
 }
 
 dependencies {
-    compile "org.springframework:spring-webmvc:${springVersion}"
-    compile "javax.servlet:javax.servlet-api:${servletVersion}"
-    compile "com.github.jknack:handlebars-springmvc:${handelbarViewResolverVersion}"
+	compile "org.springframework:spring-webmvc:${springVersion}"
+	compile "javax.servlet:javax.servlet-api:${servletVersion}"
+	compile "com.github.jknack:handlebars-springmvc:${handelbarViewResolverVersion}"
 
-    compile "org.springframework:spring-orm:${springVersion}"
-    compile "org.springframework:spring-tx:${springVersion}"
-    compile "org.springframework.data:spring-data-jpa:${springDataJpaVersion}"
-    compile "org.springframework:spring-aspects:${springVersion}"
+	compile "org.springframework:spring-orm:${springVersion}"
+	compile "org.springframework:spring-tx:${springVersion}"
+	compile "org.springframework.data:spring-data-jpa:${springDataJpaVersion}"
+	compile "org.springframework:spring-aspects:${springVersion}"
 
-    compile "org.hibernate:hibernate-core:${hibernateVersion}"
-    compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
+	compile "org.hibernate:hibernate-core:${hibernateVersion}"
+	compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
 
-    compile "mysql:mysql-connector-java:${mysqlConnectorVersion}"
+	compile "mysql:mysql-connector-java:${mysqlConnectorVersion}"
 
-    compile "org.projectlombok:lombok:${lombokVersion}"
-    compile "com.google.guava:guava:${guavaVersion}"
+	compile "org.projectlombok:lombok:${lombokVersion}"
+	compile "com.google.guava:guava:${guavaVersion}"
 
-    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+	compile "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+	compile "commons-io:commons-io:${commonsIoVersion}"
 
-    runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
-    runtime "ch.qos.logback:logback-classic:${logbackVersion}"
+	runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+	runtime "ch.qos.logback:logback-classic:${logbackVersion}"
 
-    testCompile "junit:junit:${junitVerison}"
-    testCompile "org.springframework:spring-test:${springVersion}"
-    testCompile "org.mockito:mockito-core:${mockitoVersion}"
+	testCompile "junit:junit:${junitVerison}"
+	testCompile "org.springframework:spring-test:${springVersion}"
+	testCompile "org.mockito:mockito-core:${mockitoVersion}"
+	testCompile "org.spockframework:spock-core:${spockVersion}"
+	testCompile "org.spockframework:spock-spring:${spockVersion}"
+	testCompile "io.github.benas:random-beans:${randomBeansVersion}"
+}
+
+flyway {
+	url = 'jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false'
+	user = 'smartuser'
+	password = 'smartuser'
+}
+
+jacoco {
+	toolVersion = "${jacocoVersion}"
+}
+jacocoTestReport.enabled = true
+
+sonarqube {
+	properties {
+		property "sonar.projectName", "SmartBoard"
+		property "sonar.projectKey", "${group}"
+		property 'sonar.projectVersion', "${version}"
+		property "sonar.sourceEncoding", "UTF-8"
+		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/jacoco.exec"
+		property "sonar.exclusions", "file:**/generated/**"
+	}
 }

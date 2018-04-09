@@ -1,8 +1,11 @@
 package com.anyang.study.configuration.domain;
 
 import com.anyang.study.Base;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -24,17 +27,21 @@ import static org.springframework.orm.jpa.vendor.Database.MYSQL;
 @EnableJpaRepositories(basePackageClasses = {Base.class})
 public class DomainContextConfig {
 
-    private static final String DB_HOST = "jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false&useUnicode=true&characterEncoding=UTF8";
-    private static final String DB_ID = "smartuser";
-    private static final String DB_PW = "smartuser";
+    @Autowired
+    private Environment environment;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean
     public DataSource dataSource() throws SQLException {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
         dataSource.setDriver(new com.mysql.jdbc.Driver());
-        dataSource.setUrl(DB_HOST);
-        dataSource.setUsername(DB_ID);
-        dataSource.setPassword(DB_PW);
+        dataSource.setUrl(environment.getProperty("base.mysql.jdbc.url"));
+        dataSource.setUsername(environment.getProperty("base.mysql.jdbc.username"));
+        dataSource.setPassword(environment.getProperty("base.mysql.jdbc.password"));
 
         return dataSource;
     }
@@ -54,10 +61,14 @@ public class DomainContextConfig {
 
     private Properties hibernateProperties() {
         Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        jpaProperties.put("hibernate.show_sql", true);
-        jpaProperties.put("hibernate.format_sql", true);
-        jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.DefaultNamingStrategy");
+        jpaProperties.put("hibernate.dialect.storage_engine",
+            environment.getRequiredProperty("hibernate.dialect.storage_engine"));
+        jpaProperties.put("hibernate.show_sql",
+            environment.getRequiredProperty("hibernate.show_sql"));
+        jpaProperties.put("hibernate.format_sql",
+            environment.getRequiredProperty("hibernate.format_sql"));
+        jpaProperties.put("hibernate.ejb.naming_strategy",
+            environment.getRequiredProperty("hibernate.ejb.naming_strategy"));
 
         return jpaProperties;
     }

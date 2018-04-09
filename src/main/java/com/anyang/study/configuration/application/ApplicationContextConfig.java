@@ -7,32 +7,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 @Configuration
 @EnableWebMvc
-@Import({DomainContextConfig.class})
-@ComponentScan(basePackageClasses = {Base.class})
+@Import({ DomainContextConfig.class })
+@ComponentScan(basePackageClasses = { Base.class })
 @EnableSpringDataWebSupport
 public class ApplicationContextConfig extends WebMvcConfigurationSupport {
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
+	@Bean
+	public HandlebarsViewResolver handlebarsViewResolver() {
+		HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
+		viewResolver.setFailOnMissingFile(false);
+		viewResolver.setCache(false);
 
-    @Bean
-    public HandlebarsViewResolver handlebarsViewResolver() {
-        HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
-        viewResolver.setFailOnMissingFile(false);
-        viewResolver.setCache(false);
+		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setSuffix(".hbs");
 
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".hbs");
-
-        return viewResolver;
-    }
+		return viewResolver;
+	}
 }

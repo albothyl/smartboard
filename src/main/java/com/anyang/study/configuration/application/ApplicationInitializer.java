@@ -1,33 +1,11 @@
 package com.anyang.study.configuration.application;
 
-import org.apache.commons.lang3.CharEncoding;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
-import org.springframework.web.servlet.DispatcherServlet;
-
 import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
 
-public class ApplicationInitializer implements WebApplicationInitializer {
-    @Override
-    public void onStartup(ServletContext servletContext) {
-        AnnotationConfigWebApplicationContext servletApplicationContext = new AnnotationConfigWebApplicationContext();
-        servletApplicationContext.register(ApplicationContextConfig.class);
-
-        final ServletRegistration.Dynamic webServlet = servletContext.addServlet("webServlet", new DispatcherServlet(servletApplicationContext));
-        webServlet.setLoadOnStartup(1);
-        webServlet.addMapping("/");
-
-        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(CharEncoding.UTF_8);
-        javax.servlet.FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encodingFilter", characterEncodingFilter);
-        encodingFilter.addMappingForUrlPatterns(null, true, "/*");
-
-        HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
-        javax.servlet.FilterRegistration.Dynamic httpMethodFilter = servletContext.addFilter("httpFilter", hiddenHttpMethodFilter);
-        httpMethodFilter.addMappingForUrlPatterns(null, true, "/*");
-
-    }
+public class ApplicationInitializer extends AbstractApplicationInitializer {
+	@Override
+	public void onStartup(ServletContext servletContext) {
+		loadRootApplicationContext(servletContext, ApplicationContextConfig.class, "webServlet", "/");
+		loadDefaultFilters(servletContext);
+	}
 }

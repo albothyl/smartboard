@@ -1,6 +1,9 @@
 package com.anyang.study.board.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,21 +19,19 @@ import java.time.LocalDateTime;
 @Table(schema = "smartboard", name = "board")
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
-    @CreatedDate
-    private LocalDateTime createdAt;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String title;
+	private String content;
+	private String writer;
+	@LastModifiedDate
+	private LocalDateTime modifiedAt;
+	@CreatedDate
+	private LocalDateTime createdAt;
 
-
-    public void setBoard(Long id, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
+	public void modify(String title, String content) {
+		this.title = title;
+		this.content = content;
+	}
 }
