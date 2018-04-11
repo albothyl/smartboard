@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <comment>dataSource - develop</comment>
+    <comment>develop</comment>
 
     <!-- mysql -->
-    <entry key="base.mysql.jdbc.url">jdbc:mysql://127.0.1.1:3306/smartboard?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF8</entry>
+    <entry key="base.mysql.jdbc.url">jdbc:mysql://127.0.0.1:3306/smartboard?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF8</entry>
     <entry key="base.mysql.jdbc.username">smartuser</entry>
     <entry key="base.mysql.jdbc.password">smartuser</entry>
 
